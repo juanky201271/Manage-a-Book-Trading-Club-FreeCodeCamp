@@ -1,2 +1,2 @@
-# Build-Voting-App-FreeCodeCamp
-Build a voting app - MERN
+# Manage-a-Book-Trading-Club-FreeCodeCamp
+Manage a Book Trading Club - MERN
