@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-//const keys = require("../config/keys")
 
 mongoose
   .connect(process.env.MONGOLAB_YELLOW_URI || process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })

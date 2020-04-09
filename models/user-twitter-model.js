@@ -8,9 +8,10 @@ const UsersTwitterId = new Schema({
   profileImageUrl: 'String',
   token: 'String',
   tokenSecret: 'String',
-  votes: [{
-    poll_id: {type: 'String' },
-    answer: {type: 'String' },
-  }],
+  //profile fields
+  fullName: 'String',
+  city: 'String',
+  state: 'String',
+  address: 'String',
 })
-module.exports = mongoose.model("BVA-users-twitterId", UsersTwitterId)
+module.exports = mongoose.model("BTC-users-twitterId", UsersTwitterId)
