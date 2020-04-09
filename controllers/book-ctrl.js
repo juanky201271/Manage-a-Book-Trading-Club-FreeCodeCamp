@@ -12,7 +12,7 @@ createBook = async (req, res) => {
   if (!book) {
     return res.status(400).json({ success: false, error: 'You must provide a correct json book', })
   }
-  // body with question, answers, ip and twitterId
+  // body with title, author and twitterId
   await book
     .save()
     .then(() => {
@@ -40,8 +40,8 @@ updateBook = async (req, res) => {
       if (!book) {
         return res.status(404).json({ success: false, error: 'Book not found', })
       }
-      book.question = body.question
-      book.answers = body.answers
+      book.title = body.title
+      book.author = body.author
       //await
       book
         .save()

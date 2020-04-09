@@ -12,9 +12,10 @@ const cookieParser = require("cookie-parser")
 const session = require("express-session")
 
 const passportSetup = require("./config/passport-setup")
-const authRouter = require("./routes/auth-router-ctrl")
-const pollRouter = require('./routes/poll-router')
-const userRouter = require('./routes/user-router')
+const authRouter = require("./routes/auth-twitter-router-ctrl")
+const bookRouter = require('./routes/book-router')
+const requestRouter = require('./routes/request-router')
+const userRouter = require('./routes/user-twitter-router')
 const db = require('./db')
 
 db.on('error', console.error.bind(console, 'MongoDB connection error:'))
@@ -44,14 +45,17 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-app.use('/api', pollRouter)
+app.use('/api', bookRouter)
+app.use('/api', requestRouter)
 app.use('/api', userRouter)
 app.use('/api', authRouter)
 
-app.use(express.static(path.join(__dirname, "client/build")))
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, "client/build")))
 
-app.use(function(req, res) {
-	res.sendFile(path.join(__dirname, '../client/build/index.html'))
-})
+  app.use(function(req, res) {
+  	res.sendFile(path.join(__dirname, '../client/build/index.html'))
+  })
+}
 
 app.listen(PORT, () => console.log(`Server on Port ${PORT}`))

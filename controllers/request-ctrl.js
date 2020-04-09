@@ -172,6 +172,38 @@ getRequestsByTakeOk = async (req, res) => {
     })
 }
 
+deleteRequestByGiveBookId = async (req, res) => {
+  await Request
+    .findAndDelete({ give_book_id: ObjectId(req.params.give_book_id) }, (err) => {
+      if (err) {
+        return res.status(400).json({ success: false, error: err, })
+      }
+      //if (!request) {
+      //  return res.status(404).json({ success: false, error: 'Request not found', })
+      //}
+      return res.status(200).json({ success: true, }) // data: request})
+    })
+    .catch(err => {
+      return res.status(400).json({ success: false, error: err, })
+    })
+}
+
+deleteRequestByTakeBookId = async (req, res) => {
+  await Request
+    .findAndDelete({ take_book_id: ObjectId(req.params.take_book_id) }, (err) => {
+      if (err) {
+        return res.status(400).json({ success: false, error: err, })
+      }
+      //if (!request) {
+      //  return res.status(404).json({ success: false, error: 'Request not found', })
+      //}
+      return res.status(200).json({ success: true, }) // data: request})
+    })
+    .catch(err => {
+      return res.status(400).json({ success: false, error: err, })
+    })
+}
+
 module.exports = {
   createRequest,
   updateRequest,
@@ -182,4 +214,6 @@ module.exports = {
   getRequestsByGiveBookId,
   getRequestsByTakeBookId,
   getRequestsByTakeOk,
+  deleteRequestByGiveBookId,
+  deleteRequestByTakeBookId
 }

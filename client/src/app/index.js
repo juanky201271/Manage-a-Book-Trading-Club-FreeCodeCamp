@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import { NavBar } from '../components'
-import { BooksList, BooksInsert, BooksUpdate, MyBooksList, BooksDetails } from '../pages'
-import api from '../api'
+import { BooksList, BooksInsert, BooksUpdate, MyBooksList, BooksRequests } from '../pages'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -76,8 +75,8 @@ class App extends Component {
             <Switch>
               <Route path="/" exact component={BooksList} />
               <Route path="/book/insert" exact component={BooksInsert} />
-              <Route path="/book/update/:_id" exact component={BooksUpdate} />
-              <Route path="/book/details/:_id" exact component={BooksDetails} />
+              <Route path="/book/:_id/update" exact component={BooksUpdate} />
+              <Route path="/book/:_id/requests" exact component={BooksRequests} />
               <Route path="/mybooks" exact component={MyBooksList} />
             </Switch>
           </>
@@ -93,7 +92,7 @@ class App extends Component {
             <Switch>
               <Route path="/" exact component={BooksList} />
               <Route path="/books" exact component={BooksList} />
-              <Route path="/book/details/:_id" exact component={BooksDetails} />
+              <Route path="/book/:_id/requests" exact component={BooksRequests} />
             </Switch>
           </>
          )

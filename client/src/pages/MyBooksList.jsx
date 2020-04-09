@@ -9,61 +9,23 @@ const Wrapper = styled.div` padding: 0 40px 40px 40px; `
 const Title = styled.h1.attrs({ className: 'h1', })``
 const Delete = styled.div` color: #ff0000; cursor: pointer; `
 
-class DeletePoll extends Component {
+class DeleteBook extends Component {
   deleteUser = async event => {
     event.preventDefault()
-    const {twitterId, ip, _id, } = this.props
-    if (window.confirm(`Do tou want to delete the poll ${_id} permanently?`,)) {
+    const { _id, } = this.props
+    if (window.confirm(`Do tou want to delete the book ${_id} and its requests permanently?`,)) {
 
-      await api.deletePollById(_id)
+      await api.deleteBookById(_id)
       .catch(error => {
         console.log(error)
       })
 
-      await api.getAllUsersTwitter().then(usersTwitter => {
-        usersTwitter.data.data.forEach((item, ind) => {
-          var upd = false
-          var vot = item.votes.map((itemVotes, indVotes) => {
-            if (itemVotes.poll_id === _id) {
-              upd = true
-              return ({ poll_id: '', answer: '' })
-            } else {
-              return ({ poll_id: itemVotes.poll_id, answer: itemVotes.answer })
-            }
-          })
-          if (upd) {
-            var payload = { votes: vot }
-            api.updateUserByTwitterId(twitterId, payload)
-            .catch(error => {
-              console.log(error)
-            })
-          }
-        })
-      })
+      await api.deleteRequestByGiveBookId(_id)
       .catch(error => {
         console.log(error)
       })
 
-      await api.getAllUsers().then(users => {
-        users.data.data.forEach((item, ind) => {
-          var upd = false
-          var vot = item.votes.map((itemVotes, indVotes) => {
-            if (itemVotes.poll_id === _id) {
-              upd = true
-              return ({ poll_id: '', answer: '' })
-            } else {
-              return ({ poll_id: itemVotes.poll_id, answer: itemVotes.answer })
-            }
-          })
-          if (upd) {
-            var payload = { votes: vot }
-            api.updateUserByIp(ip, payload)
-            .catch(error => {
-              console.log(error)
-            })
-          }
-        })
-      })
+      await api.deleteRequestByTakeBookId(_id)
       .catch(error => {
         console.log(error)
       })
@@ -76,11 +38,11 @@ class DeletePoll extends Component {
   }
 }
 
-class MyPollsList extends Component {
+class MyBooksList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            polls: [],
+            books: [],
             columns: [],
             isLoading: false,
         }
@@ -89,8 +51,8 @@ class MyPollsList extends Component {
       this.setState({ isLoading: true })
 
       const { twitterId } = this.props.location.state
-      await api.getAllPolls().then(polls => {
-        let p = polls.data.data
+      await api.getAllBooks().then(books => {
+        let p = books.data.data
         if (twitterId) {
           p = p.filter(function(item) {
             return item.twitterId === twitterId.toString()
@@ -99,7 +61,7 @@ class MyPollsList extends Component {
           p = []
         }
         this.setState({
-            polls: p,
+            books: p,
             isLoading: false,
         })
       })
@@ -112,8 +74,8 @@ class MyPollsList extends Component {
 
     }
     render() {
-      console.log('my polls', this.state)
-        const { polls, isLoading } = this.state
+      console.log('my books', this.state)
+        const { books, isLoading } = this.state
         const columns = [
             {
                 Header: 'ID',
@@ -121,24 +83,14 @@ class MyPollsList extends Component {
                 filterable: true,
             },
             {
-                Header: 'Question',
-                accessor: 'question',
+                Header: 'Title',
+                accessor: 'title',
                 filterable: true,
             },
             {
-                Header: 'Answers',
-                accessor: 'answers',
-                Cell: function(props) {
-                  return (
-                      <span>
-                        {props.value.length > 1
-                          ?
-                          (props.value.map((ele, ind) => ele.answer).join(' / '))
-                          :
-                          (props.value.map((ele, ind) => ele.answer))}
-                      </span>
-                  )
-                }
+                Header: 'Author',
+                accessor: 'author',
+                filterable: true,
             },
             {
                 Header: '',
@@ -146,11 +98,10 @@ class MyPollsList extends Component {
                 Cell: function(props) {
                     return (
                         <span>
-                            <DeletePoll
+                            <DeleteBook
                               _id={props.original._id}
                               authenticated={this.props.location.state.authenticated}
                               twitterId={this.props.location.state.twitterId}
-                              ip={this.props.location.state.ip}
                               user={this.props.location.state.user} />
                         </span>
                     )
@@ -163,11 +114,10 @@ class MyPollsList extends Component {
                     return (
                         <span>
                           <React.Fragment>
-                            <Link to={{ pathname: `/poll/update/${props.original._id}`,
+                            <Link to={{ pathname: `/book/${props.original._id}/update`,
                                     state: {
                                       authenticated: this.props.location.state.authenticated,
                                       twitterId: this.props.location.state.twitterId,
-                                      ip: this.props.location.state.ip,
                                       user: this.props.location.state.user,
                                     }
                                   }}
@@ -184,15 +134,14 @@ class MyPollsList extends Component {
                     return (
                         <span>
                           <React.Fragment>
-                            <Link to={{ pathname: `/poll/details/${props.original._id}`,
+                            <Link to={{ pathname: `/book/${props.original._id}/requests`,
                                     state: {
                                       authenticated: this.props.location.state.authenticated,
                                       twitterId: this.props.location.state.twitterId,
-                                      ip: this.props.location.state.ip,
                                       user: this.props.location.state.user,
                                     }
                                   }}
-                                  className="nav-link" >Details</Link>
+                                  className="nav-link" >Requests</Link>
                           </React.Fragment>
                         </span>
                     )
@@ -201,16 +150,16 @@ class MyPollsList extends Component {
         ]
 
         let showTable = true
-        if (!polls.length) {
+        if (!books.length) {
             showTable = false
         }
 
         return (
             <Wrapper>
-                <Title>My Polls</Title>
+                <Title>My Books</Title>
                 {showTable && !isLoading && (
                     <ReactTable
-                        data={polls}
+                        data={books}
                         columns={columns}
                         loading={isLoading}
                         defaultPageSize={10}
@@ -224,11 +173,11 @@ class MyPollsList extends Component {
                 )}
 
                 {isLoading && (
-                    <h3>Loading Polls</h3>
+                    <h3>Loading Books</h3>
                 )}
             </Wrapper>
         )
     }
 }
 
-export default MyPollsList
+export default MyBooksList

@@ -40,7 +40,7 @@ class Links extends Component {
                   }}
           className="navbar-brand"
         >
-          Build a voting App
+          Books Exchange
         </Link>
         <Collapse>
           <List>

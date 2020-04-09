@@ -17,40 +17,34 @@ const CancelButton = styled.a.attrs({ className: `btn btn-danger`, })`
     margin: 15px 15px 15px 5px;
 `
 
-class PollsInsert extends Component {
+class BooksInsert extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            question: '',
-            answers: '',
+            title: '',
+            author: '',
         }
     }
-    handleChangeInputQuestion = event => {
-        const question = event.target.value
-        this.setState({ question })
+    handleChangeInputTitle = event => {
+        const title = event.target.value
+        this.setState({ title })
     }
-    handleChangeInputAnswers = event => {
-        const answers = event.target.value
-        this.setState({ answers })
+    handleChangeInputAuthor = event => {
+        const author = event.target.value
+        this.setState({ author })
     }
-    handleIncludePoll = async (event) => {
+    handleIncludeBook = async (event) => {
         event.preventDefault();
-        const { question, answers, } = this.state
-        const { twitterId, ip, } = this.props.location.state
-        const arrayAnswers = answers.split('/')
+        const { title, author, } = this.state
+        const { twitterId, } = this.props.location.state
 
-        var arrTemp = []
-        arrayAnswers.map((ele, ind) => {
-          return (arrTemp.push({ answer: ele.trim(), votes: 0, }))
-        })
+        const payload = { title: title, author: author, twitterId: twitterId }
 
-        const payload = { question: question, answers: arrTemp, ip: ip, twitterId: twitterId }
-
-        await api.insertPoll(payload).then(res => {
-            window.alert(`Poll inserted successfully`)
+        await api.insertBook(payload).then(res => {
+            window.alert(`Book inserted successfully`)
             this.setState({
-              question: '',
-              answers: '',
+              title: '',
+              author: '',
             })
         })
         .catch(error => {
@@ -61,31 +55,30 @@ class PollsInsert extends Component {
     }
     render() {
       console.log('insert', this.state)
-        const { question, answers } = this.state
+        const { title, author } = this.state
         return (
             <Wrapper>
-                <Title>Create Poll</Title>
+                <Title>Create Book</Title>
 
-                <Label>Question: </Label>
+                <Label>Title: </Label>
                 <InputText
                     type="text"
-                    value={question}
-                    onChange={this.handleChangeInputQuestion}
+                    value={title}
+                    onChange={this.handleChangeInputTitle}
                 />
 
-                <Label>Answers: </Label>
+                <Label>Author: </Label>
                 <InputText
                     type="text"
-                    value={answers}
-                    placeholder="Separate each one with '/'..."
-                    onChange={this.handleChangeInputAnswers}
+                    value={author}
+                    onChange={this.handleChangeInputAuthor}
                 />
 
-                <Button onClick={this.handleIncludePoll}>Add Poll</Button>
+                <Button onClick={this.handleIncludeBook}>Add Book</Button>
                 <CancelButton href={'/'}>Cancel</CancelButton>
             </Wrapper>
         )
     }
 }
 
-export default PollsInsert
+export default BooksInsert

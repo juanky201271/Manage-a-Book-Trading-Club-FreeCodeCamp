@@ -5,12 +5,12 @@ import Logo from './Logo'
 import Links from './Links'
 
 const Container = styled.div.attrs({ className: "container" })``
-const Nav = styled.nav.attrs({ className: "navbar navbar-expand-lg navbar-dark bg-dark" })`
+const Nav = styled.nav.attrs({ className: "navbar navbar-expand-lg navbar-dark bg-secondary " })`
   margin-bottom: 20px;
 `
 const Name = styled.div`
   color: #fff;
-  background: #444;
+  background: #666;
   padding: 5px;
 `
 const Pic = styled.img`
@@ -23,7 +23,6 @@ class NavBar extends Component {
     this.state = {
       authenticated: this.props.authenticated || '',
       twitterId: this.props.twitterId || '',
-      ip: this.props.ip || '',
       user: this.props.user || '',
     }
   }
@@ -32,7 +31,7 @@ class NavBar extends Component {
   }
   render() {
     console.log('navbar', this.state)
-    const { authenticated, twitterId, ip, user,  } = this.state
+    const { authenticated, twitterId, user,  } = this.state
     const name = user.name || ''
     const profileImageUrl = user.profileImageUrl || ''
     return (

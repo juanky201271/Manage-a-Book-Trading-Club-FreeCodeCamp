@@ -5,26 +5,17 @@ const CLIENT_HOME_PAGE_URL = process.env.PUBLIC_URL
 
 // when login is successful, retrieve user info
 router.get("/auth/login/success", (req, res) => {
-  var ipAddr = req.headers["x-forwarded-for"]
-  if (ipAddr){
-    var list = ipAddr.split(",")
-    ipAddr = list[list.length-1]
-  } else {
-    ipAddr = req.connection.remoteAddress
-  }
   if (req.user) {
     res.json({
       success: true,
       message: "user has successfully authenticated",
       user: req.user,
       cookies: req.cookies,
-      ip: ipAddr,
     })
   } else {
     res.json({
       success: false,
       message: "user hasn't authenticated",
-      ip: ipAddr,
     })
   }
 })

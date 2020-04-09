@@ -8,11 +8,13 @@ import 'react-table-6/react-table.css'
 const Wrapper = styled.div` padding: 0 40px 40px 40px; `
 const Title = styled.h1.attrs({ className: 'h1', })``
 
-class BooksList extends Component {
+class BooksRequests extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            books: [],
+            _id: this.props.match.params._id,
+            requestsGive: [],
+            requestsTake: [],
             columns: [],
             isLoading: false,
             authenticated: '',
@@ -22,43 +24,20 @@ class BooksList extends Component {
     }
     componentDidMount = async () => {
         this.setState({ isLoading: true })
+        const { _id } = this.state
 
-        await fetch("/api/auth/login/success", {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            Accept:
-            "application/json",
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Credentials": true
-          }
-        })
-          .then(response => {
-            if (response.status === 200) return response.json()
-            throw new Error("failed to authenticate user")
-          })
-          .then(responseJson => {
-            if (responseJson.success === true) {
-              this.setState({
-                authenticated: true,
-                twitterId: responseJson.user.twitterId,
-                user: responseJson.user,
-              })
-            } else {
-              this.setState({
-                authenticated: false,
-                twitterId: '',
-                user: '',
-              })
-            }
-          })
-          .catch(error => {
-            console.log(error)
-          })
-
-        await api.getAllBooks().then(books => {
+        await api.getRequestsByGiveBookId(_id).then(requests => {
             this.setState({
-                books: books.data.data,
+                requestsGive: requests.data.data,
+            })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+
+        await api.getRequestsByTakeBookId(_id).then(requests => {
+            this.setState({
+                requestsTake: requests.data.data,
                 isLoading: false,
             })
         })
@@ -75,9 +54,20 @@ class BooksList extends Component {
         .then(user => user.data.data.name)
         .catch(error => console.log(error))
     }
+    handleBookTitle(book_id) {
+      return api.getBookById(book_id)
+        .then(user => user.data.data.title)
+        .catch(error => console.log(error))
+    }
+    handleBookAuthor(book_id) {
+      return api.getBookById(book_id)
+        .then(user => user.data.data.author)
+        .catch(error => console.log(error))
+    }
     render() {
-      console.log('books', this.state)
-        const { books, isLoading } = this.state
+      console.log('requests', this.state)
+        const { requestsGive, requestsTake, isLoading } = this.state
+        const requests = [...requestsGive, ...requestsTake]
         const columns = [
             {
                 Header: 'ID',
@@ -85,14 +75,36 @@ class BooksList extends Component {
                 filterable: true,
             },
             {
-                Header: 'Title',
-                accessor: 'title',
-                filterable: true,
+                Header: 'Give',
+                accessor: '',
+                Cell: function(props) {
+                    return (
+                      <span>
+                        <React.Fragment>
+                          <div>
+                            {() => this.handleBookTitle(props.original.give_book_id)}<br />
+                            {() => this.handleBookAuthor(props.original.give_book_id)}
+                          </div>
+                        </React.Fragment>
+                      </span>
+                    )
+                }.bind(this),
             },
             {
-                Header: 'Author',
-                accessor: 'author',
-                filterable: true,
+              Header: 'Take',
+              accessor: '',
+              Cell: function(props) {
+                  return (
+                    <span>
+                      <React.Fragment>
+                        <div>
+                          {() => this.handleBookTitle(props.original.take_book_id)}<br />
+                          {() => this.handleBookAuthor(props.original.take_book_id)}
+                        </div>
+                      </React.Fragment>
+                    </span>
+                  )
+              }.bind(this),
             },
             {
                 Header: 'from User',
@@ -101,7 +113,7 @@ class BooksList extends Component {
                     return (
                       <span>
                         <React.Fragment>
-                          <Link to={{ pathname: `/user/${props.original.twitterId}/books`,
+                          <Link to={{ pathname: `/user/${props.original.twitterId}/requests`,
                                   state: {
                                     authenticated: this.state.authenticated,
                                     twitterId: this.state.twitterId,
@@ -114,39 +126,19 @@ class BooksList extends Component {
                     )
                 }.bind(this),
             },
-            {
-                Header: '',
-                accessor: '',
-                Cell: function(props) {
-                    return (
-                      <span>
-                        <React.Fragment>
-                          <Link to={{ pathname: `/book/${props.original._id}/requests`,
-                                  state: {
-                                    authenticated: this.state.authenticated,
-                                    twitterId: this.state.twitterId,
-                                    user: this.state.user,
-                                  }
-                                }}
-                                className="nav-link" >Requests</Link>
-                        </React.Fragment>
-                      </span>
-                    )
-                }.bind(this),
-            },
         ]
 
         let showTable = true
-        if (!books.length) {
+        if (!requests.length) {
             showTable = false
         }
 
         return (
             <Wrapper>
-                <Title>Books</Title>
+                <Title>Requests</Title>
                 {showTable && !isLoading && (
                     <ReactTable
-                        data={books}
+                        data={requests}
                         columns={columns}
                         loading={isLoading}
                         defaultPageSize={10}
@@ -167,4 +159,4 @@ class BooksList extends Component {
     }
 }
 
-export default BooksList
+export default BooksRequests

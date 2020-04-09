@@ -20,41 +20,34 @@ const CancelButton = styled.a.attrs({ className: `btn btn-danger`, })`
     margin: 15px 15px 15px 5px;
 `
 
-class PollsUpdate extends Component {
+class BooksUpdate extends Component {
     constructor(props) {
         super(props)
         this.state = {
             _id: this.props.match.params._id,
-            question: '',
-            answers: '',
-            votes: [],
+            title: '',
+            author: '',
         }
         this.updateButtonRef = React.createRef()
     }
-    handleChangeInputQuestion = event => {
-        const question = event.target.value
-        this.setState({ question })
+    handleChangeInputTitle = event => {
+        const title = event.target.value
+        this.setState({ title })
     }
-    handleChangeInputAnswers = event => {
-        const answers = event.target.value
-        this.setState({ answers })
+    handleChangeInputAuthor = event => {
+        const author = event.target.value
+        this.setState({ author })
     }
-    handleUpdatePoll = async (event) => {
+    handleUpdateBook = async (event) => {
       event.preventDefault();
-      const { _id, question, answers, } = this.state
-      const arrayAnswers = answers.split('/')
-      var arrTemp = []
-      arrayAnswers.map((ele, ind) => {
-        return (arrTemp.push({ answer: ele.trim(), votes: 0, }))
-      })
-      const payload = { question, answers: arrTemp, }
+      const { _id, title, author, } = this.state
 
-      await api.updatePollById(_id, payload).then(res => {
-        window.alert(`Poll updated successfully`)
+      const payload = { title: title, author: author, }
+      await api.updateBookById(_id, payload).then(res => {
+        window.alert(`Book updated successfully`)
         this.setState({
-          question: '',
-          answers: [],
-          votes: [],
+          title: '',
+          author: '',
         })
       })
       .catch(error => {
@@ -64,55 +57,53 @@ class PollsUpdate extends Component {
       window.location.href = '/'
     }
     componentDidMount = async () => {
-      var { _id, votes } = this.state
-      await api.getPollById(_id).then(poll => {
-        votes = poll.data.data.answers.map((ele, ind) => ele.votes)
+      var { _id } = this.state
+      await api.getBookById(_id).then(book => {
         this.setState({
-          question: poll.data.data.question,
-          answers: poll.data.data.answers.map((ele, ind) => ele.answer.trim()).join(' / '),
-          votes: poll.data.data.answers.map((ele, ind) => ele.votes),
+          title: book.data.data.title,
+          author: book.data.data.author,
         })
       })
       .catch(error => {
         console.log(error)
       })
 
-      const votesExists = votes.filter((ele, ind) => {
-        return ele > 0
-      })
-      if (votesExists.length > 0 && this.updateButtonRef.current) {
-        this.updateButtonRef.current.style.display = "none"
-      }
+      //const votesExists = votes.filter((ele, ind) => {
+      //  return ele > 0
+      //})
+      //if (votesExists.length > 0 && this.updateButtonRef.current) {
+      //  this.updateButtonRef.current.style.display = "none"
+      //}
 
     }
     render() {
         console.log('update', this.state)
-        const { question, answers, } = this.state
+        const { title, author, } = this.state
 
         return (
             <Wrapper>
-                <Title>Update Poll</Title>
+                <Title>Update Book</Title>
 
-                <Label>Question: </Label>
+                <Label>Title: </Label>
                 <InputText
                     type="text"
-                    value={question}
-                    onChange={this.handleChangeInputQuestion}
+                    value={title}
+                    onChange={this.handleChangeInputTitle}
                 />
 
-                <Label>Answers: </Label>
+                <Label>Author: </Label>
                 <InputText
                     type="text"
-                    value={answers}
+                    value={author}
                     placeholder="Separate each one with '/'..."
-                    onChange={this.handleChangeInputAnswers}
+                    onChange={this.handleChangeInputAuthor}
                 />
 
-                <Button id="updateButton" onClick={this.handleUpdatePoll} ref={this.updateButtonRef}>Update Poll</Button>
+                <Button id="updateButton" onClick={this.handleUpdateBook} ref={this.updateButtonRef}>Update Book</Button>
                 <CancelButton href={'/'}>Cancel</CancelButton>
             </Wrapper>
         )
     }
 }
 
-export default PollsUpdate
+export default BooksUpdate

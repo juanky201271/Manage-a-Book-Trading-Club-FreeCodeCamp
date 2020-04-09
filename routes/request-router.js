@@ -14,5 +14,7 @@ requestRouter.get('/requests/twitterid/:twitterId', RequestCtrl.getRequestsByTwi
 requestRouter.get('/requests/givebookid/:give_book_id', RequestCtrl.getRequestsByGiveBookId)
 requestRouter.get('/requests/takebookid/:take_book_id', RequestCtrl.getRequestsByTakeBookId)
 requestRouter.get('/requests/takeok/:take_ok', RequestCtrl.getRequestsByTakeOk)
+requestRouter.delete('/request/givebookid/:give_book_id', RequestCtrl.deleteRequestByGiveBookId)
+requestRouter.delete('/request/takebookid/:take_book_id', RequestCtrl.deleteRequestByTakeBookId)
 
 module.exports = requestRouter

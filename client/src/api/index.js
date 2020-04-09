@@ -22,6 +22,8 @@ export const getRequestsByTwitterId = twitterId => api.get(`/requests/twitterid/
 export const getRequestsByGiveBookId = give_book_id => api.get(`/requests/givebookid/${give_book_id}`)
 export const getRequestsByTakeBookId = take_book_id => api.get(`/requests/takebookid/${take_book_id}`)
 export const getRequestsByTakeOk = take_ok => api.get(`/requests/takeok/${take_ok}`)
+export const deleteRequestByGiveBookId = give_book_id => api.delete(`/requests/givebookid/${give_book_id}`)
+export const deleteRequestByTakeBookId = take_book_id => api.delete(`/requests/takebookid/${take_book_id}`)
 
 export const getAllUsersTwitter = () => api.get(`/userstwitter`)
 export const updateUserByTwitterId = (twitterId, payload) => api.put(`/usertwitter/${twitterId}`, payload)
@@ -39,6 +41,12 @@ const apis = {
     updateRequestById,
     deleteRequestById,
     getRequestById,
+    getRequestsByTwitterId,
+    getRequestsByGiveBookId,
+    getRequestsByTakeBookId,
+    getRequestsByTakeOk,
+    deleteRequestByGiveBookId,
+    deleteRequestByTakeBookId,
 
     getAllUsersTwitter,
     updateUserByTwitterId,

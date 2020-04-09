@@ -1,4 +1,3 @@
-const User = require('../models/user-model')
 const UserTwitter = require('../models/user-twitter-model')
 const mongoose = require('mongoose')
 
@@ -70,14 +69,6 @@ getUsersTwitter = async (req, res) => {
 }
 
 module.exports = {
-  createUser,
-  updateUserById,
-  updateUserByIp,
-  deleteUserById,
-  deleteUserByIp,
-  getUserById,
-  getUserByIp,
-  getUsers,
   updateUserByTwitterId,
   getUserByTwitterId,
   getUsersTwitter,
