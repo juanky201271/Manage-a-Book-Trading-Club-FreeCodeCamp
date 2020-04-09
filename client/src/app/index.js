@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import { NavBar } from '../components'
-import { PollsList, PollsInsert, PollsUpdate, MyPollsList, PollsDetails } from '../pages'
+import { BooksList, BooksInsert, BooksUpdate, MyBooksList, BooksDetails } from '../pages'
 import api from '../api'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -13,7 +13,6 @@ class App extends Component {
     this.state = {
       authenticated: false,
       twitterId: '',
-      ip: '',
       user: '',
       isLoading: false,
     }
@@ -23,7 +22,6 @@ class App extends Component {
       isLoading: true,
     })
 
-    var ip = ''
     await fetch("/api/auth/login/success", { // express
       method: "GET",
       credentials: "include",
@@ -39,20 +37,19 @@ class App extends Component {
         throw new Error("failed to authenticate user")
       })
       .then(responseJson => {
-        ip = responseJson.ip
         if (responseJson.success === true) {
           this.setState({
             authenticated: true,
             twitterId: responseJson.user.twitterId,
             user: responseJson.user,
-            ip: responseJson.ip,
+            isLoading: false,
           })
         } else {
           this.setState({
             authenticated: false,
             twitterId: '',
             user: '',
-            ip: responseJson.ip,
+            isLoading: false,
           })
         }
       })
@@ -60,38 +57,10 @@ class App extends Component {
         console.log(error)
       })
 
-      await this.addUserIp(ip)
-
-      this.setState({
-        isLoading: false,
-      })
-  }
-  addUserIp = async (ip) => {
-    if (ip) {
-      const currentUser = await api.getUserByIp(ip).catch(err => console.log(err))
-      if (!currentUser) {
-        //console.log('New User')
-        const payload = {
-          ip: ip,
-          votes: [],
-        }
-        const newUser = await api.insertUser(payload).catch(err => console.log(err))
-        if (newUser) {
-          //console.log('New User created')
-          //done(null, newUser)
-        } else {
-          //console.log("New User don't created")
-        }
-      } else {
-        //console.log('User exists')
-      }
-    } else {
-      //console.log('IP empty')
-    }
   }
   render() {
     console.log('app', this.state)
-    const { authenticated, twitterId, ip, user, isLoading, } = this.state
+    const { authenticated, twitterId, user, isLoading, } = this.state
     return (
       <Router>
 
@@ -102,15 +71,14 @@ class App extends Component {
             <NavBar
               authenticated={authenticated}
               twitterId={twitterId}
-              ip={ip}
               user={user}
             />
             <Switch>
-              <Route path="/" exact component={PollsList} />
-              <Route path="/poll/insert" exact component={PollsInsert} />
-              <Route path="/poll/update/:_id" exact component={PollsUpdate} />
-              <Route path="/poll/details/:_id" exact component={PollsDetails} />
-              <Route path="/mypolls" exact component={MyPollsList} />
+              <Route path="/" exact component={BooksList} />
+              <Route path="/book/insert" exact component={BooksInsert} />
+              <Route path="/book/update/:_id" exact component={BooksUpdate} />
+              <Route path="/book/details/:_id" exact component={BooksDetails} />
+              <Route path="/mybooks" exact component={MyBooksList} />
             </Switch>
           </>
          )
@@ -120,13 +88,12 @@ class App extends Component {
             <NavBar
               authenticated={authenticated}
               twitterId={twitterId}
-              ip={ip}
               user={user}
             />
             <Switch>
-              <Route path="/" exact component={PollsList} />
-              <Route path="/polls" exact component={PollsList} />
-              <Route path="/poll/details/:_id" exact component={PollsDetails} />
+              <Route path="/" exact component={BooksList} />
+              <Route path="/books" exact component={BooksList} />
+              <Route path="/book/details/:_id" exact component={BooksDetails} />
             </Switch>
           </>
          )

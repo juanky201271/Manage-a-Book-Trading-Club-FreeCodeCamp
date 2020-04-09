@@ -25,7 +25,6 @@ class NavBar extends Component {
       twitterId: this.props.twitterId || '',
       ip: this.props.ip || '',
       user: this.props.user || '',
-      //isLoading: false,
     }
   }
   _handleNotAuthenticated = () => {
@@ -43,7 +42,6 @@ class NavBar extends Component {
           <Links
             authenticated={authenticated}
             twitterId={twitterId}
-            ip={ip}
             user={user}
             handleNotAuthenticated={this._handleNotAuthenticated}
           />
@@ -57,13 +55,6 @@ class NavBar extends Component {
           { profileImageUrl ?
             (
               <Pic src={profileImageUrl}></Pic>
-            ) : (
-              <div></div>
-            )
-          }
-          { ip ?
-            (
-              <Name>{ip}</Name>
             ) : (
               <div></div>
             )

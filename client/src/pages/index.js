@@ -1,7 +1,7 @@
-import PollsList from './PollsList'
-import PollsInsert from './PollsInsert'
-import PollsUpdate from './PollsUpdate'
-import MyPollsList from './MyPollsList'
-import PollsDetails from './PollsDetails'
+import BooksList from './BooksList'
+import BooksInsert from './BooksInsert'
+import BooksUpdate from './BooksUpdate'
+import MyBooksList from './MyBooksList'
+import BooksDetails from './BooksDetails'
 
-export { PollsList, PollsInsert, PollsUpdate, MyPollsList, PollsDetails }
+export { BooksList, BooksInsert, BooksUpdate, MyBooksList, BooksDetails }

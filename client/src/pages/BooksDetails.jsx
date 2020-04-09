@@ -52,14 +52,12 @@ const InputRadio = styled.input.attrs({ type: 'radio', })`
     margin: 5px;
 `
 
-class PollsDetails extends Component {
+class BooksDetails extends Component {
     constructor(props) {
         super(props)
         this.state = {
             _id: this.props.match.params._id,
             authenticated: this.props.location.state.authenticated,
-            twitterId: this.props.location.state.twitterId,
-            ip: this.props.location.state.ip,
             user: this.props.location.state.user,
             question: '',
             answers: '',
@@ -84,9 +82,9 @@ class PollsDetails extends Component {
         const extraOption = event.target.value
         this.setState({ extraOption })
     }
-    handleVotePoll = async (event) => {
+    handleVoteBook = async (event) => {
       event.preventDefault();
-      const { _id, question, answers, extraOption, vote, authenticated, twitterId, ip, } = this.state
+      const { _id, question, answers, extraOption, vote, authenticated, twitterId, } = this.state
       if (!vote) return
       if (!extraOption && vote.trim() === "I'd like a custom option") return
 
@@ -101,8 +99,8 @@ class PollsDetails extends Component {
       if (extraOption && vote.trim() === "I'd like a custom option") arrTemp.push({ answer: extraOption, votes: 1, })
       const payload = { question, answers: arrTemp, }
 
-      await api.updatePollById(_id, payload).then(res => {
-        window.alert(`Poll voted successfully`)
+      await api.updateBookById(_id, payload).then(res => {
+        window.alert(`Book voted successfully`)
       })
       .catch(error => {
         console.log(error)
@@ -113,7 +111,7 @@ class PollsDetails extends Component {
         await api.getUserByTwitterId(twitterId).then(user => {
 
           arrTemp = user.data.data.votes || []
-          arrTemp.push({ poll_id: _id,
+          arrTemp.push({ book_id: _id,
             answer: ( vote.trim() === "I'd like a custom option" ? extraOption : vote.trim()) })
         })
         .catch(error => {
@@ -129,7 +127,7 @@ class PollsDetails extends Component {
         await api.getUserByIp(ip).then(user => {
 
           arrTemp = user.data.data.votes || []
-          arrTemp.push({ poll_id: _id,
+          arrTemp.push({ book_id: _id,
             answer: ( vote.trim() === "I'd like a custom option" ? extraOption : vote.trim()) })
         })
         .catch(error => {
@@ -171,12 +169,12 @@ class PollsDetails extends Component {
         })
       }
 
-      await api.getPollById(_id).then(poll => {
-        const arrayAnswers = poll.data.data.answers.map((item, ind) =>
+      await api.getBookById(_id).then(book => {
+        const arrayAnswers = book.data.data.answers.map((item, ind) =>
           <div key={item.toString().substr(0,5) + ind.toString()}>
             <InputRadio id={item.answer.trim()} name="options" value={item.answer.trim()} onChange={this.handleChangeInputVote} />
             { userVotes.filter((itemUser, indUser) => {
-                return (itemUser.poll_id === _id && itemUser.answer.trim() === item.answer.trim())
+                return (itemUser.book_id === _id && itemUser.answer.trim() === item.answer.trim())
               }).length > 0 ? (
               <LabelVoted>{item.answer.trim() + ' ..... (' + item.votes + '). Your VOTE.'}</LabelVoted>
             )
@@ -193,9 +191,9 @@ class PollsDetails extends Component {
           </div>
         )
         this.setState({
-            question: poll.data.data.question,
+            question: book.data.data.question,
             answersHtml: arrayAnswers,
-            answers: poll.data.data.answers,
+            answers: book.data.data.answers,
         })
       })
       .catch(error => {
@@ -206,7 +204,7 @@ class PollsDetails extends Component {
         this.shareButtonRef.current.style.display = "none"
       }
       const votesExists = userVotes.filter((ele, ind) => {
-        return ele.poll_id === _id
+        return ele.book_id === _id
       })
       if (votesExists.length > 0 && this.updateButtonRef.current) {
         this.updateButtonRef.current.style.display = "none"
@@ -220,7 +218,7 @@ class PollsDetails extends Component {
         console.log('details', this.state)
         const { question, answersHtml, _id } = this.state
         const url = 'https://twitter.com/intent/tweet?url=' +
-                    'https://bva-jccc-fcc.herokuapp.com/poll/details/' +
+                    'https://bva-jccc-fcc.herokuapp.com/book/details/' +
                     this.props.match.params._id +
                     '&text=' +
                     question +
@@ -230,7 +228,7 @@ class PollsDetails extends Component {
         return (
             <Wrapper>
               <WrapperLeft>
-                <Title>Poll Details</Title>
+                <Title>Book Details</Title>
                 <Label>{question}</Label>
                 {answersHtml}
                 <InputText
@@ -241,7 +239,7 @@ class PollsDetails extends Component {
                     onChange={this.handleChangeInputExtraOption}
                     ref={this.extraInputRef}
                 />
-                <Button onClick={this.handleVotePoll} id="updateButton" ref={this.updateButtonRef}>Vote</Button>
+                <Button onClick={this.handleVoteBook} id="updateButton" ref={this.updateButtonRef}>Vote</Button>
                 <CancelButton href={'/'}>Cancel</CancelButton>
                 <ShareButton onClick={() => this.handleShare(url)} id="shareButton" ref={this.shareButtonRef}>Share on Twitter</ShareButton>
               </WrapperLeft>
@@ -253,4 +251,4 @@ class PollsDetails extends Component {
     }
 }
 
-export default PollsDetails
+export default BooksDetails

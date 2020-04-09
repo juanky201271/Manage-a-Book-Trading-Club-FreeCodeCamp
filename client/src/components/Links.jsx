@@ -15,56 +15,26 @@ class Links extends Component {
     this.state = {
       authenticated: this.props.authenticated || '',
       twitterId: this.props.twitterId || '',
-      ip: this.props.ip || '',
       user: this.props.user || '',
-      //isLoading: false,
     }
   }
   _handleLogoutClick = async () => {
     window.open("/api/auth/logout", "_self") // express
-    //await fetch("/api/auth/logout", { // express
-    //  method: "GET",
-    //  credentials: "include",
-    //  headers: {
-    //    Accept:
-    //    "application/json",
-    //    "Content-Type": "application/json",
-    //    "Access-Control-Allow-Credentials": true
-    //    }
-    //  })
-    //  .catch(error => {
-    //    console.log(error)
-    //  })
     this.props.handleNotAuthenticated()
     this.setState({ authenticated: false, twitterId: '', user: '', })
   }
   _handleLoginClick = async () => {
     window.open("/api/auth/twitter", "_self")
-    //await fetch("/api/auth/twitter", { // express
-    //  method: "GET",
-    //  credentials: "include",
-    //  headers: {
-    //    Accept:
-    //    "application/json",
-    //    "Content-Type": "application/json",
-    //    "Access-Control-Allow-Credentials": true
-    //    }
-    //  })
-    //  .catch(error => {
-    //    console.log(error)
-    //  })
-
   }
   render() {
     console.log('links', this.state)
-    const { authenticated, twitterId, ip, user, } = this.state
+    const { authenticated, twitterId, user, } = this.state
     return (
       <React.Fragment>
         <Link to={{ pathname: "/",
                     state: {
                       authenticated: authenticated,
                       twitterId: twitterId,
-                      ip: ip,
                       user: user,
                     }
                   }}
@@ -80,30 +50,28 @@ class Links extends Component {
                           state: {
                             authenticated: authenticated,
                             twitterId: twitterId,
-                            ip: ip,
                             user: user,
                           }
                         }}
                 className="nav-link"
               >
-                Polls
+                Books
               </Link>
             </Item>
 
             <Item>
               {
                 authenticated ? (
-                  <Link to={{ pathname: "/mypolls",
+                  <Link to={{ pathname: "/mybooks",
                               state: {
                                 authenticated: authenticated,
                                 twitterId: twitterId,
-                                ip: ip,
                                 user: user,
                               }
                             }}
                     className="nav-link"
                   >
-                    My Polls
+                    My Books
                   </Link>
                 ) : (
                   <div></div>
@@ -114,17 +82,16 @@ class Links extends Component {
             <Item>
             {
               authenticated ? (
-                <Link to={{ pathname: "/poll/insert",
+                <Link to={{ pathname: "/book/insert",
                             state: {
                               authenticated: authenticated,
                               twitterId: twitterId,
-                              ip: ip,
                               user: user,
                             }
                           }}
                   className="nav-link"
                 >
-                  Create Poll
+                  Create Book
                 </Link>
               ) : (
                 <div></div>
