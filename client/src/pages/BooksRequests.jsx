@@ -18,7 +18,7 @@ class BooksRequests extends Component {
             columns: [],
             isLoading: false,
             authenticated: '',
-            twitterId: '',
+            user_id: '',
             user: '',
         }
     }
@@ -49,21 +49,6 @@ class BooksRequests extends Component {
         })
 
     }
-    handleUserName(twitterId) {
-      return api.getUserByTwitterId(twitterId)
-        .then(user => user.data.data.name)
-        .catch(error => console.log(error))
-    }
-    handleBookTitle(book_id) {
-      return api.getBookById(book_id)
-        .then(user => user.data.data.title)
-        .catch(error => console.log(error))
-    }
-    handleBookAuthor(book_id) {
-      return api.getBookById(book_id)
-        .then(user => user.data.data.author)
-        .catch(error => console.log(error))
-    }
     render() {
       console.log('requests', this.state)
         const { requestsGive, requestsTake, isLoading } = this.state
@@ -82,29 +67,29 @@ class BooksRequests extends Component {
                       <span>
                         <React.Fragment>
                           <div>
-                            {() => this.handleBookTitle(props.original.give_book_id)}<br />
-                            {() => this.handleBookAuthor(props.original.give_book_id)}
+                            {props.original.give_book_id.title}<br />
+                            {props.original.give_book_id.author}
                           </div>
                         </React.Fragment>
                       </span>
                     )
-                }.bind(this),
+                },
             },
             {
-              Header: 'Take',
-              accessor: '',
-              Cell: function(props) {
-                  return (
-                    <span>
-                      <React.Fragment>
-                        <div>
-                          {() => this.handleBookTitle(props.original.take_book_id)}<br />
-                          {() => this.handleBookAuthor(props.original.take_book_id)}
-                        </div>
-                      </React.Fragment>
-                    </span>
-                  )
-              }.bind(this),
+                Header: 'Take',
+                accessor: '',
+                Cell: function(props) {
+                    return (
+                      <span>
+                        <React.Fragment>
+                          <div>
+                            {props.original.take_book_id.title}<br />
+                            {props.original.take_book_id.author}
+                          </div>
+                        </React.Fragment>
+                      </span>
+                    )
+                },
             },
             {
                 Header: 'from User',
@@ -113,14 +98,14 @@ class BooksRequests extends Component {
                     return (
                       <span>
                         <React.Fragment>
-                          <Link to={{ pathname: `/user/${props.original.twitterId}/requests`,
+                          <Link to={{ pathname: `/user/${props.original.user_id}`,
                                   state: {
                                     authenticated: this.state.authenticated,
-                                    twitterId: this.state.twitterId,
+                                    user_id: this.state.user_id,
                                     user: this.state.user,
                                   }
                                 }}
-                                className="nav-link" >{() => this.handleUserName(props.original.twitterId)}</Link>
+                                className="nav-link" >{props.original.user_id.screenName}</Link>
                         </React.Fragment>
                       </span>
                     )

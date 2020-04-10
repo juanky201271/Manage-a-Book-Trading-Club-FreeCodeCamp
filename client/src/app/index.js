@@ -2,7 +2,16 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import { NavBar } from '../components'
-import { BooksList, BooksInsert, BooksUpdate, MyBooksList, BooksRequests } from '../pages'
+import { BooksList,
+         BooksInsert,
+         BooksUpdate,
+         MyBooksList,
+         BooksRequests,
+         RequestsList,
+         RequestsInsert,
+         MyRequestsList,
+         UsersList,
+       } from '../pages'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -11,7 +20,7 @@ class App extends Component {
     super(props)
     this.state = {
       authenticated: false,
-      twitterId: '',
+      user_id: '',
       user: '',
       isLoading: false,
     }
@@ -39,14 +48,14 @@ class App extends Component {
         if (responseJson.success === true) {
           this.setState({
             authenticated: true,
-            twitterId: responseJson.user.twitterId,
+            user_id: responseJson.user._id,
             user: responseJson.user,
             isLoading: false,
           })
         } else {
           this.setState({
             authenticated: false,
-            twitterId: '',
+            user_id: '',
             user: '',
             isLoading: false,
           })
@@ -59,7 +68,7 @@ class App extends Component {
   }
   render() {
     console.log('app', this.state)
-    const { authenticated, twitterId, user, isLoading, } = this.state
+    const { authenticated, user_id, user, isLoading, } = this.state
     return (
       <Router>
 
@@ -69,7 +78,7 @@ class App extends Component {
            <>
             <NavBar
               authenticated={authenticated}
-              twitterId={twitterId}
+              user_id={user_id}
               user={user}
             />
             <Switch>
@@ -78,6 +87,10 @@ class App extends Component {
               <Route path="/book/:_id/update" exact component={BooksUpdate} />
               <Route path="/book/:_id/requests" exact component={BooksRequests} />
               <Route path="/mybooks" exact component={MyBooksList} />
+              <Route path="/requests" exact component={RequestsList} />
+              <Route path="/request/insert" exact component={RequestsInsert} />
+              <Route path="/myrequests" exact component={MyRequestsList} />
+              <Route path="/users" exact component={UsersList} />
             </Switch>
           </>
          )
@@ -86,13 +99,14 @@ class App extends Component {
            <>
             <NavBar
               authenticated={authenticated}
-              twitterId={twitterId}
+              user_id={user_id}
               user={user}
             />
             <Switch>
               <Route path="/" exact component={BooksList} />
-              <Route path="/books" exact component={BooksList} />
+              <Route path="/requests" exact component={RequestsList} />
               <Route path="/book/:_id/requests" exact component={BooksRequests} />
+              <Route path="/users" exact component={UsersList} />
             </Switch>
           </>
          )

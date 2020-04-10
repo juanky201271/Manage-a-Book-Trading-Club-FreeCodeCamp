@@ -10,7 +10,7 @@ export const updateBookById = (_id, payload) => api.put(`/book/${_id}`, payload)
 export const deleteBookById = _id => api.delete(`/book/${_id}`)
 export const getBookById = _id => api.get(`/book/${_id}`)
 // new
-export const getBooksByTwitterId = twitterId => api.get(`/books/twitterid/${twitterId}`)
+export const getBooksByUserId = user_id => api.get(`/books/user_id/${user_id}`)
 
 export const insertRequest = payload => api.post(`/request`, payload)
 export const getAllRequests = () => api.get(`/requests`)
@@ -18,16 +18,16 @@ export const updateRequestById = (_id, payload) => api.put(`/request/${_id}`, pa
 export const deleteRequestById = _id => api.delete(`/request/${_id}`)
 export const getRequestById = _id => api.get(`/request/${_id}`)
 // new
-export const getRequestsByTwitterId = twitterId => api.get(`/requests/twitterid/${twitterId}`)
+export const getRequestsByUserId = user_id => api.get(`/requests/user_id/${user_id}`)
 export const getRequestsByGiveBookId = give_book_id => api.get(`/requests/givebookid/${give_book_id}`)
 export const getRequestsByTakeBookId = take_book_id => api.get(`/requests/takebookid/${take_book_id}`)
 export const getRequestsByTakeOk = take_ok => api.get(`/requests/takeok/${take_ok}`)
-export const deleteRequestByGiveBookId = give_book_id => api.delete(`/requests/givebookid/${give_book_id}`)
-export const deleteRequestByTakeBookId = take_book_id => api.delete(`/requests/takebookid/${take_book_id}`)
+export const deleteRequestsByGiveBookId = give_book_id => api.delete(`/requests/givebookid/${give_book_id}`)
+export const deleteRequestsByTakeBookId = take_book_id => api.delete(`/requests/takebookid/${take_book_id}`)
 
-export const getAllUsersTwitter = () => api.get(`/userstwitter`)
-export const updateUserByTwitterId = (twitterId, payload) => api.put(`/usertwitter/${twitterId}`, payload)
-export const getUserByTwitterId = twitterId => api.get(`/usertwitter/${twitterId}`)
+export const getAllUsers = () => api.get(`/users`)
+export const updateUserById = (_id, payload) => api.put(`/user/${_id}`, payload)
+export const getUserById = _id => api.get(`/user/${_id}`)
 
 const apis = {
     insertBook,
@@ -35,22 +35,23 @@ const apis = {
     updateBookById,
     deleteBookById,
     getBookById,
+    getBooksByUserId,
 
     insertRequest,
     getAllRequests,
     updateRequestById,
     deleteRequestById,
     getRequestById,
-    getRequestsByTwitterId,
+    getRequestsByUserId,
     getRequestsByGiveBookId,
     getRequestsByTakeBookId,
     getRequestsByTakeOk,
-    deleteRequestByGiveBookId,
-    deleteRequestByTakeBookId,
+    deleteRequestsByGiveBookId,
+    deleteRequestsByTakeBookId,
 
-    getAllUsersTwitter,
-    updateUserByTwitterId,
-    getUserByTwitterId,
+    getAllUsers,
+    updateUserById,
+    getUserById,
 }
 
 export default apis

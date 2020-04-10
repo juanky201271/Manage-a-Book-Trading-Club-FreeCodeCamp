@@ -10,6 +10,6 @@ bookRouter.delete('/book/:_id', BookCtrl.deleteBook)
 bookRouter.get('/book/:_id', BookCtrl.getBookById)
 bookRouter.get('/books', BookCtrl.getBooks)
 // new
-bookRouter.get('/books/twitterid/:twitterId', BookCtrl.getBooksByTwitterId)
+bookRouter.get('/books/user_id/:user_id', BookCtrl.getBooksByUserId)
 
 module.exports = bookRouter

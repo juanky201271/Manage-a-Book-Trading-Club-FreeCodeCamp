@@ -12,7 +12,7 @@ createBook = async (req, res) => {
   if (!book) {
     return res.status(400).json({ success: false, error: 'You must provide a correct json book', })
   }
-  // body with title, author and twitterId
+  // body with title, author and userid
   await book
     .save()
     .then(() => {
@@ -79,7 +79,9 @@ deleteBook = async (req, res) => {
 
 getBookById = async (req, res) => {
   await Book
-    .findOne({ _id: ObjectId(req.params._id) }, (err, book) => {
+    .findOne({ _id: ObjectId(req.params._id) })
+    .populate('user_id')
+    .exec((err, book) => {
       if (err) {
         return res.status(400).json({ success: false, error: err, })
       }
@@ -95,7 +97,9 @@ getBookById = async (req, res) => {
 
 getBooks = async (req, res) => {
   await Book
-    .find({}, (err, books) => {
+    .find({})
+    .populate('user_id')
+    .exec((err, books) => {
       if (err) {
         return res.status(400).json({ success: false, error: err, })
       }
@@ -104,14 +108,16 @@ getBooks = async (req, res) => {
       }
       return res.status(200).json({ success: true, data: books})
     })
-    .catch(err => {
-      return res.status(400).json({ success: false, error: err, })
-    })
+    //.catch(err => {
+    //  return res.status(400).json({ success: false, error: err, })
+    //})
 }
 
-getBooksByTwitterId = async (req, res) => {
+getBooksByUserId = async (req, res) => {
   await Book
-    .find({ twitterId: req.params.twitterId }, (err, book) => {
+    .find({ user_id: ObjectId(req.params.user_id) })
+    .populate('user_id')
+    .exec((err, book) => {
       if (err) {
         return res.status(400).json({ success: false, error: err, })
       }
@@ -120,9 +126,9 @@ getBooksByTwitterId = async (req, res) => {
       }
       return res.status(200).json({ success: true, data: book})
     })
-    .catch(err => {
-      return res.status(400).json({ success: false, error: err, })
-    })
+    //.catch(err => {
+    //  return res.status(400).json({ success: false, error: err, })
+    //})
 }
 
 module.exports = {
@@ -131,5 +137,5 @@ module.exports = {
   deleteBook,
   getBookById,
   getBooks,
-  getBooksByTwitterId,
+  getBooksByUserId,
 }

@@ -12,10 +12,10 @@ const cookieParser = require("cookie-parser")
 const session = require("express-session")
 
 const passportSetup = require("./config/passport-setup")
-const authRouter = require("./routes/auth-twitter-router-ctrl")
+const authUserRouter = require("./routes/auth-user-router-ctrl")
 const bookRouter = require('./routes/book-router')
 const requestRouter = require('./routes/request-router')
-const userRouter = require('./routes/user-twitter-router')
+const userRouter = require('./routes/user-router')
 const db = require('./db')
 
 db.on('error', console.error.bind(console, 'MongoDB connection error:'))
@@ -48,7 +48,7 @@ app.use(bodyParser.json())
 app.use('/api', bookRouter)
 app.use('/api', requestRouter)
 app.use('/api', userRouter)
-app.use('/api', authRouter)
+app.use('/api', authUserRouter)
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, "client/build")))

@@ -1,6 +1,6 @@
 const passport = require("passport")
 const TwitterStrategy = require("passport-twitter").Strategy
-const UserTwitter = require("../models/user-twitter-model")
+const User = require("../models/user-model")
 
 // serialize the user.id to save in the cookie session
 // so the browser will remember the user when login
@@ -10,7 +10,7 @@ passport.serializeUser((user, done) => {
 
 // deserialize the cookieUserId to user in the database
 passport.deserializeUser((id, done) => {
-  UserTwitter.findById(id)
+  User.findById(id)
     .then(user => {
       done(null, user)
     })
@@ -29,19 +29,23 @@ passport.use(
     },
     async (token, tokenSecret, profile, done) => {
       //console.log(profile)
-      const currentUser = await UserTwitter.findOne({
+      const currentUser = await User.findOne({
         twitterId: profile._json.id_str
       }).catch(err => console.log(err))
 
       if (!currentUser) {
         console.log('nuevo usuario')
-        const newUser = await new UserTwitter({
+        const newUser = await new User({
           twitterId: profile._json.id_str,
           name: profile._json.name,
           screenName: profile._json.screen_name,
           profileImageUrl: profile._json.profile_image_url,
           token: token,
           tokenSecret: tokenSecret,
+          fullName: profile._json.name,
+          city: '',
+          state: '',
+          address: '',
         }).save().catch(err => console.log(err))
         if (newUser) {
           console.log('usuario nuevo creado')

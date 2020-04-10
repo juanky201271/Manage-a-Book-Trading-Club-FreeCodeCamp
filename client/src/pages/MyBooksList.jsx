@@ -20,12 +20,12 @@ class DeleteBook extends Component {
         console.log(error)
       })
 
-      await api.deleteRequestByGiveBookId(_id)
+      await api.deleteRequestsByGiveBookId(_id)
       .catch(error => {
         console.log(error)
       })
 
-      await api.deleteRequestByTakeBookId(_id)
+      await api.deleteRequestsByTakeBookId(_id)
       .catch(error => {
         console.log(error)
       })
@@ -50,18 +50,10 @@ class MyBooksList extends Component {
     componentDidMount = async () => {
       this.setState({ isLoading: true })
 
-      const { twitterId } = this.props.location.state
-      await api.getAllBooks().then(books => {
-        let p = books.data.data
-        if (twitterId) {
-          p = p.filter(function(item) {
-            return item.twitterId === twitterId.toString()
-          })
-        } else {
-          p = []
-        }
+      const { user_id } = this.props.location.state
+      await api.getBooksByUserId(user_id).then(books => {
         this.setState({
-            books: p,
+            books: books.data.data,
             isLoading: false,
         })
       })
@@ -93,6 +85,26 @@ class MyBooksList extends Component {
                 filterable: true,
             },
             {
+                Header: 'from User',
+                accessor: '',
+                Cell: function(props) {
+                    return (
+                      <span>
+                        <React.Fragment>
+                          <Link to={{ pathname: `/user/${props.original.user_id._id}`,
+                                  state: {
+                                    authenticated: this.props.location.state.authenticated,
+                                    user_id: this.props.location.state.user_id,
+                                    user: this.props.location.state.user,
+                                  }
+                                }}
+                                className="nav-link" >{props.original.user_id.screenName}</Link>
+                        </React.Fragment>
+                      </span>
+                    )
+                }.bind(this),
+            },
+            {
                 Header: '',
                 accessor: '',
                 Cell: function(props) {
@@ -101,7 +113,7 @@ class MyBooksList extends Component {
                             <DeleteBook
                               _id={props.original._id}
                               authenticated={this.props.location.state.authenticated}
-                              twitterId={this.props.location.state.twitterId}
+                              user_id={this.props.location.state.user_id}
                               user={this.props.location.state.user} />
                         </span>
                     )
@@ -117,7 +129,7 @@ class MyBooksList extends Component {
                             <Link to={{ pathname: `/book/${props.original._id}/update`,
                                     state: {
                                       authenticated: this.props.location.state.authenticated,
-                                      twitterId: this.props.location.state.twitterId,
+                                      user_id: this.props.location.state.user_id,
                                       user: this.props.location.state.user,
                                     }
                                   }}
@@ -137,7 +149,7 @@ class MyBooksList extends Component {
                             <Link to={{ pathname: `/book/${props.original._id}/requests`,
                                     state: {
                                       authenticated: this.props.location.state.authenticated,
-                                      twitterId: this.props.location.state.twitterId,
+                                      user_id: this.props.location.state.user_id,
                                       user: this.props.location.state.user,
                                     }
                                   }}

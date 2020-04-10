@@ -14,27 +14,27 @@ class Links extends Component {
     super(props)
     this.state = {
       authenticated: this.props.authenticated || '',
-      twitterId: this.props.twitterId || '',
+      user_id: this.props.user_id || '',
       user: this.props.user || '',
     }
   }
   _handleLogoutClick = async () => {
     window.open("/api/auth/logout", "_self") // express
     this.props.handleNotAuthenticated()
-    this.setState({ authenticated: false, twitterId: '', user: '', })
+    this.setState({ authenticated: false, user_id: '', user: '', })
   }
   _handleLoginClick = async () => {
     window.open("/api/auth/twitter", "_self")
   }
   render() {
     console.log('links', this.state)
-    const { authenticated, twitterId, user, } = this.state
+    const { authenticated, user_id, user, } = this.state
     return (
       <React.Fragment>
         <Link to={{ pathname: "/",
                     state: {
                       authenticated: authenticated,
-                      twitterId: twitterId,
+                      user_id: user_id,
                       user: user,
                     }
                   }}
@@ -49,7 +49,7 @@ class Links extends Component {
               <Link to={{ pathname: "/",
                           state: {
                             authenticated: authenticated,
-                            twitterId: twitterId,
+                            user_id: user_id,
                             user: user,
                           }
                         }}
@@ -65,7 +65,7 @@ class Links extends Component {
                   <Link to={{ pathname: "/mybooks",
                               state: {
                                 authenticated: authenticated,
-                                twitterId: twitterId,
+                                user_id: user_id,
                                 user: user,
                               }
                             }}
@@ -85,7 +85,7 @@ class Links extends Component {
                 <Link to={{ pathname: "/book/insert",
                             state: {
                               authenticated: authenticated,
-                              twitterId: twitterId,
+                              user_id: user_id,
                               user: user,
                             }
                           }}
@@ -97,6 +97,74 @@ class Links extends Component {
                 <div></div>
               )
             }
+            </Item>
+
+            <Item>
+              <Link to={{ pathname: "/requests",
+                          state: {
+                            authenticated: authenticated,
+                            user_id: user_id,
+                            user: user,
+                          }
+                        }}
+                className="nav-link"
+              >
+                Requests
+              </Link>
+            </Item>
+
+            <Item>
+              {
+                authenticated ? (
+                  <Link to={{ pathname: "/myrequests",
+                              state: {
+                                authenticated: authenticated,
+                                user_id: user_id,
+                                user: user,
+                              }
+                            }}
+                    className="nav-link"
+                  >
+                    My Requests
+                  </Link>
+                ) : (
+                  <div></div>
+                )
+              }
+            </Item>
+
+            <Item>
+            {
+              authenticated ? (
+                <Link to={{ pathname: "/request/insert",
+                            state: {
+                              authenticated: authenticated,
+                              user_id: user_id,
+                              user: user,
+                            }
+                          }}
+                  className="nav-link"
+                >
+                  Create Request
+                </Link>
+              ) : (
+                <div></div>
+              )
+            }
+            </Item>
+
+            <Item>
+              <Link to={{ pathname: "/users",
+                          state: {
+                            authenticated: authenticated,
+                            user_id: user_id,
+                            user: user,
+                          }
+                        }}
+                className="nav-link"
+              >
+                Users
+              </Link>
             </Item>
 
           </List>

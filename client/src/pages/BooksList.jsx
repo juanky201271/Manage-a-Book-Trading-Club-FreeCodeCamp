@@ -16,7 +16,7 @@ class BooksList extends Component {
             columns: [],
             isLoading: false,
             authenticated: '',
-            twitterId: '',
+            user_id: '',
             user: '',
         }
     }
@@ -41,13 +41,13 @@ class BooksList extends Component {
             if (responseJson.success === true) {
               this.setState({
                 authenticated: true,
-                twitterId: responseJson.user.twitterId,
+                user_id: responseJson.user._id,
                 user: responseJson.user,
               })
             } else {
               this.setState({
                 authenticated: false,
-                twitterId: '',
+                user_id: '',
                 user: '',
               })
             }
@@ -57,10 +57,10 @@ class BooksList extends Component {
           })
 
         await api.getAllBooks().then(books => {
-            this.setState({
-                books: books.data.data,
-                isLoading: false,
-            })
+          this.setState({
+              books: books.data.data,
+              isLoading: false,
+          })
         })
         .catch(error => {
           console.log(error)
@@ -69,11 +69,6 @@ class BooksList extends Component {
           })
         })
 
-    }
-    handleUserName(twitterId) {
-      return api.getUserByTwitterId(twitterId)
-        .then(user => user.data.data.name)
-        .catch(error => console.log(error))
     }
     render() {
       console.log('books', this.state)
@@ -101,14 +96,14 @@ class BooksList extends Component {
                     return (
                       <span>
                         <React.Fragment>
-                          <Link to={{ pathname: `/user/${props.original.twitterId}/books`,
+                          <Link to={{ pathname: `/user/${props.original.user_id._id}`,
                                   state: {
                                     authenticated: this.state.authenticated,
-                                    twitterId: this.state.twitterId,
+                                    user_id: this.state.user_id,
                                     user: this.state.user,
                                   }
                                 }}
-                                className="nav-link" >{() => this.handleUserName(props.original.twitterId)}</Link>
+                                className="nav-link" >{props.original.user_id.screenName}</Link>
                         </React.Fragment>
                       </span>
                     )
@@ -124,7 +119,7 @@ class BooksList extends Component {
                           <Link to={{ pathname: `/book/${props.original._id}/requests`,
                                   state: {
                                     authenticated: this.state.authenticated,
-                                    twitterId: this.state.twitterId,
+                                    user_id: this.state.user_id,
                                     user: this.state.user,
                                   }
                                 }}

@@ -12,7 +12,7 @@ createRequest = async (req, res) => {
   if (!request) {
     return res.status(400).json({ success: false, error: 'You must provide a correct json request', })
   }
-  // body with givebookid, takebookid, takeok and twitterId
+  // body with givebookid, takebookid, takeok and userid
   await request
     .save()
     .then(() => {
@@ -78,7 +78,11 @@ deleteRequest = async (req, res) => {
 
 getRequestById = async (req, res) => {
   await Request
-    .findOne({ _id: ObjectId(req.params._id) }, (err, request) => {
+    .findOne({ _id: ObjectId(req.params._id) })
+    .populate('give_book_id')
+    .populate('take_book_id')
+    .populate('user_id')
+    .exec((err, request) => {
       if (err) {
         return res.status(400).json({ success: false, error: err, })
       }
@@ -87,14 +91,18 @@ getRequestById = async (req, res) => {
       }
       return res.status(200).json({ success: true, data: request})
     })
-    .catch(err => {
-      return res.status(400).json({ success: false, error: err, })
-    })
+    //.catch(err => {
+    //  return res.status(400).json({ success: false, error: err, })
+    //})
 }
 
 getRequests = async (req, res) => {
   await Request
-    .find({}, (err, requests) => {
+    .find({})
+    .populate('give_book_id')
+    .populate('take_book_id')
+    .populate('user_id')
+    .exec((err, requests) => {
       if (err) {
         return res.status(400).json({ success: false, error: err, })
       }
@@ -103,14 +111,18 @@ getRequests = async (req, res) => {
       }
       return res.status(200).json({ success: true, data: requests})
     })
-    .catch(err => {
-      return res.status(400).json({ success: false, error: err, })
-    })
+    //.catch(err => {
+    //  return res.status(400).json({ success: false, error: err, })
+    //})
 }
 
-getRequestsByTwitterId = async (req, res) => {
+getRequestsByUserId = async (req, res) => {
   await Request
-    .find({ twitterId: req.params.twitterId }, (err, request) => {
+    .find({ user_id: ObjectId(req.params.user_id) })
+    .populate('give_book_id')
+    .populate('take_book_id')
+    .populate('user_id')
+    .exec((err, request) => {
       if (err) {
         return res.status(400).json({ success: false, error: err, })
       }
@@ -119,14 +131,18 @@ getRequestsByTwitterId = async (req, res) => {
       }
       return res.status(200).json({ success: true, data: request})
     })
-    .catch(err => {
-      return res.status(400).json({ success: false, error: err, })
-    })
+    //.catch(err => {
+    //  return res.status(400).json({ success: false, error: err, })
+    //})
 }
 
 getRequestsByGiveBookId = async (req, res) => {
   await Request
-    .find({ give_book_id: req.params.give_book_id }, (err, request) => {
+    .find({ give_book_id: ObjectId(req.params.give_book_id) })
+    .populate('give_book_id')
+    .populate('take_book_id')
+    .populate('user_id')
+    .exec((err, request) => {
       if (err) {
         return res.status(400).json({ success: false, error: err, })
       }
@@ -135,14 +151,18 @@ getRequestsByGiveBookId = async (req, res) => {
       }
       return res.status(200).json({ success: true, data: request})
     })
-    .catch(err => {
-      return res.status(400).json({ success: false, error: err, })
-    })
+    //.catch(err => {
+    //  return res.status(400).json({ success: false, error: err, })
+    //})
 }
 
 getRequestsByTakeBookId = async (req, res) => {
   await Request
-    .find({ take_book_id: req.params.take_book_id }, (err, request) => {
+    .find({ take_book_id: ObjectId(req.params.take_book_id) })
+    .populate('give_book_id')
+    .populate('take_book_id')
+    .populate('user_id')
+    .exec((err, request) => {
       if (err) {
         return res.status(400).json({ success: false, error: err, })
       }
@@ -151,14 +171,18 @@ getRequestsByTakeBookId = async (req, res) => {
       }
       return res.status(200).json({ success: true, data: request})
     })
-    .catch(err => {
-      return res.status(400).json({ success: false, error: err, })
-    })
+    //.catch(err => {
+    //  return res.status(400).json({ success: false, error: err, })
+    //})
 }
 
 getRequestsByTakeOk = async (req, res) => {
   await Request
-    .find({ take_ok: req.params.take_ok }, (err, request) => {
+    .find({ take_ok: req.params.take_ok })
+    .populate('give_book_id')
+    .populate('take_book_id')
+    .populate('user_id')
+    .exec((err, request) => {
       if (err) {
         return res.status(400).json({ success: false, error: err, })
       }
@@ -167,12 +191,12 @@ getRequestsByTakeOk = async (req, res) => {
       }
       return res.status(200).json({ success: true, data: request})
     })
-    .catch(err => {
-      return res.status(400).json({ success: false, error: err, })
-    })
+    //.catch(err => {
+    //  return res.status(400).json({ success: false, error: err, })
+    //})
 }
 
-deleteRequestByGiveBookId = async (req, res) => {
+deleteRequestsByGiveBookId = async (req, res) => {
   await Request
     .findAndDelete({ give_book_id: ObjectId(req.params.give_book_id) }, (err) => {
       if (err) {
@@ -188,7 +212,7 @@ deleteRequestByGiveBookId = async (req, res) => {
     })
 }
 
-deleteRequestByTakeBookId = async (req, res) => {
+deleteRequestsByTakeBookId = async (req, res) => {
   await Request
     .findAndDelete({ take_book_id: ObjectId(req.params.take_book_id) }, (err) => {
       if (err) {
@@ -210,10 +234,10 @@ module.exports = {
   deleteRequest,
   getRequestById,
   getRequests,
-  getRequestsByTwitterId,
+  getRequestsByUserId,
   getRequestsByGiveBookId,
   getRequestsByTakeBookId,
   getRequestsByTakeOk,
-  deleteRequestByGiveBookId,
-  deleteRequestByTakeBookId
+  deleteRequestsByGiveBookId,
+  deleteRequestsByTakeBookId
 }

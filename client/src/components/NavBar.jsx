@@ -22,16 +22,16 @@ class NavBar extends Component {
     super(props)
     this.state = {
       authenticated: this.props.authenticated || '',
-      twitterId: this.props.twitterId || '',
+      user_id: this.props.user_id || '',
       user: this.props.user || '',
     }
   }
   _handleNotAuthenticated = () => {
-    this.setState({ authenticated: false, twitterId: '', user: '', })
+    this.setState({ authenticated: false, user_id: '', user: '', })
   }
   render() {
     console.log('navbar', this.state)
-    const { authenticated, twitterId, user,  } = this.state
+    const { authenticated, user_id, user,  } = this.state
     const name = user.name || ''
     const profileImageUrl = user.profileImageUrl || ''
     return (
@@ -40,7 +40,7 @@ class NavBar extends Component {
           <Logo />
           <Links
             authenticated={authenticated}
-            twitterId={twitterId}
+            user_id={user_id}
             user={user}
             handleNotAuthenticated={this._handleNotAuthenticated}
           />

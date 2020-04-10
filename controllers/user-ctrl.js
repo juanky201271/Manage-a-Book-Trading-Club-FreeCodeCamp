@@ -1,29 +1,32 @@
-const UserTwitter = require('../models/user-twitter-model')
+const User = require('../models/user-model')
 const mongoose = require('mongoose')
 
 const ObjectId = mongoose.Types.ObjectId
 
-updateUserByTwitterId = async (req, res) => {
+updateUserById = async (req, res) => {
   const body = req.body
   if (!body) {
-    return res.status(400).json({ success: false, error: 'You must provide a user twitter', })
+    return res.status(400).json({ success: false, error: 'You must provide a user ', })
   }
-  await UserTwitter
-    .findOne({ twitterId: req.params.twitterId }, (err, userTwitter) => {
+  await User
+    .findOne({ _id: ObjectId(req.params._id) }, (err, user) => {
       if (err) {
         return res.status(400).json({ success: false, error: err, })
       }
-      if (!userTwitter) {
-        return res.status(404).json({ success: false, error: 'User twitter not found', })
+      if (!user) {
+        return res.status(404).json({ success: false, error: 'User not found', })
       }
-      userTwitter.votes = body.votes
+      user.fullName = body.fullName
+      user.city = body.city
+      user.state = body.state
+      user.address = body.address
       //await
-      userTwitter
+      user
         .save()
         .then(() => {
           return res.status(201).json({
             success: true,
-            twitterId: userTwitter.twitterId,
+            _id: user._id,
             message: 'User updated!',
           })
         })
@@ -36,32 +39,32 @@ updateUserByTwitterId = async (req, res) => {
     })
 }
 
-getUserByTwitterId = async (req, res) => {
-  await UserTwitter
-    .findOne({ twitterId: req.params.twitterId }, (err, userTwitter) => {
+getUserById = async (req, res) => {
+  await User
+    .findOne({ _id: ObjectId(req.params._id) }, (err, user) => {
       if (err) {
         return res.status(400).json({ success: false, error: err, })
       }
-      if (!userTwitter) {
-        return res.status(404).json({ success: false, error: 'User twitter not found by id', })
+      if (!user) {
+        return res.status(404).json({ success: false, error: 'User not found', })
       }
-      return res.status(200).json({ success: true, data: userTwitter })
+      return res.status(200).json({ success: true, data: user })
     })
     .catch(err => {
       return res.status(400).json({ success: false, error: err, })
     })
 }
 
-getUsersTwitter = async (req, res) => {
-  await UserTwitter
-    .find({}, (err, usersTwitter) => {
+getUsers = async (req, res) => {
+  await User
+    .find({}, (err, users) => {
       if (err) {
         return res.status(400).json({ success: false, error: err, })
       }
-      if (!usersTwitter.length) {
+      if (!users.length) {
         return res.status(404).json({ success: false, error: 'Users not found', })
       }
-      return res.status(200).json({ success: true, data: usersTwitter})
+      return res.status(200).json({ success: true, data: users})
     })
     .catch(err => {
       return res.status(400).json({ success: false, error: err, })
@@ -69,7 +72,7 @@ getUsersTwitter = async (req, res) => {
 }
 
 module.exports = {
-  updateUserByTwitterId,
-  getUserByTwitterId,
-  getUsersTwitter,
+  updateUserById,
+  getUserById,
+  getUsers,
 }

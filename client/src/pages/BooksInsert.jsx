@@ -36,9 +36,9 @@ class BooksInsert extends Component {
     handleIncludeBook = async (event) => {
         event.preventDefault();
         const { title, author, } = this.state
-        const { twitterId, } = this.props.location.state
+        const { user_id, } = this.props.location.state
 
-        const payload = { title: title, author: author, twitterId: twitterId }
+        const payload = { title: title, author: author, user_id: user_id }
 
         await api.insertBook(payload).then(res => {
             window.alert(`Book inserted successfully`)
