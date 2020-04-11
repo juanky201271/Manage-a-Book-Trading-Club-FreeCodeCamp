@@ -8,14 +8,6 @@ const Container = styled.div.attrs({ className: "container" })``
 const Nav = styled.nav.attrs({ className: "navbar navbar-expand-lg navbar-dark bg-secondary " })`
   margin-bottom: 20px;
 `
-const Name = styled.div`
-  color: #fff;
-  background: #666;
-  padding: 5px;
-`
-const Pic = styled.img`
-  width: 30px;
-`
 
 class NavBar extends Component {
   constructor(props) {

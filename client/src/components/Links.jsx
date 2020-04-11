@@ -37,7 +37,7 @@ class Links extends Component {
   render() {
     console.log('links', this.state)
     const { authenticated, user_id, user, } = this.state
-    const name = user.name || ''
+    const name = user.fullName || user.name || ''
     const profileImageUrl = user.profileImageUrl || ''
     return (
       <React.Fragment>
@@ -46,6 +46,7 @@ class Links extends Component {
                       authenticated: authenticated,
                       user_id: user_id,
                       user: user,
+                      backURL: '/',
                     }
                   }}
           className="navbar-brand"
@@ -61,6 +62,7 @@ class Links extends Component {
                             authenticated: authenticated,
                             user_id: user_id,
                             user: user,
+                            backURL: '/',
                           }
                         }}
                 className="nav-link"
@@ -77,6 +79,7 @@ class Links extends Component {
                                 authenticated: authenticated,
                                 user_id: user_id,
                                 user: user,
+                                backURL: '/mybooks',
                               }
                             }}
                     className="nav-link"
@@ -97,6 +100,7 @@ class Links extends Component {
                               authenticated: authenticated,
                               user_id: user_id,
                               user: user,
+                              backURL: '/mybooks',
                             }
                           }}
                   className="nav-link"
@@ -115,6 +119,7 @@ class Links extends Component {
                             authenticated: authenticated,
                             user_id: user_id,
                             user: user,
+                            backURL: '/requests',
                           }
                         }}
                 className="nav-link"
@@ -131,6 +136,7 @@ class Links extends Component {
                                 authenticated: authenticated,
                                 user_id: user_id,
                                 user: user,
+                                backURL: '/myrequests',
                               }
                             }}
                     className="nav-link"
@@ -151,6 +157,7 @@ class Links extends Component {
                               authenticated: authenticated,
                               user_id: user_id,
                               user: user,
+                              backURL: '/myrequests',
                             }
                           }}
                   className="nav-link"
@@ -164,25 +171,12 @@ class Links extends Component {
             </Item>
 
             <Item>
-              <Link to={{ pathname: "/users",
-                          state: {
-                            authenticated: authenticated,
-                            user_id: user_id,
-                            user: user,
-                          }
-                        }}
-                className="nav-link"
-              >
-                Users
-              </Link>
-            </Item>
-
-            <Item>
               <Link to={{ pathname: "/trades",
                           state: {
                             authenticated: authenticated,
                             user_id: user_id,
                             user: user,
+                            backURL: '/trades',
                           }
                         }}
                 className="nav-link"
@@ -199,6 +193,7 @@ class Links extends Component {
                                 authenticated: authenticated,
                                 user_id: user_id,
                                 user: user,
+                                backURL: '/mytrades',
                               }
                             }}
                     className="nav-link"
@@ -209,6 +204,21 @@ class Links extends Component {
                   <div></div>
                 )
               }
+            </Item>
+
+            <Item>
+              <Link to={{ pathname: "/users",
+                          state: {
+                            authenticated: authenticated,
+                            user_id: user_id,
+                            user: user,
+                            backURL: '/users',
+                          }
+                        }}
+                className="nav-link"
+              >
+                Users
+              </Link>
             </Item>
 
           </List>
@@ -224,7 +234,6 @@ class Links extends Component {
             )
           }
 
-
             <List>
 
               <Item>
@@ -233,6 +242,7 @@ class Links extends Component {
                               authenticated: authenticated,
                               user_id: user_id,
                               user: user,
+                              backURL: '/users',
                             }
                           }}
                   className="nav-link"
@@ -247,6 +257,7 @@ class Links extends Component {
                               authenticated: authenticated,
                               user_id: user_id,
                               user: user,
+                              backURL: '/users',
                             }
                           }}
                   className="nav-link"

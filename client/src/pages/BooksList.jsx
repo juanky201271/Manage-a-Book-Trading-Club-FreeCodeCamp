@@ -15,9 +15,9 @@ class BooksList extends Component {
             books: [],
             columns: [],
             isLoading: false,
-            authenticated: this.props.location.state.authenticated,
-            user_id: this.props.location.state.user_id,
-            user: this.props.location.state.user,
+            authenticated: this.props.location.state ? this.props.location.state.authenticated : '',
+            user_id: this.props.location.state ? this.props.location.state.user_id : '',
+            user: this.props.location.state ? this.props.location.state.user : '',
         }
     }
     componentDidMount = async () => {
@@ -101,6 +101,7 @@ class BooksList extends Component {
                                     authenticated: this.state.authenticated,
                                     user_id: this.state.user_id,
                                     user: this.state.user,
+                                    backURL: '/',
                                   }
                                 }}
                                 className="nav-link" >{props.original.user_id.screenName}</Link>
@@ -121,6 +122,7 @@ class BooksList extends Component {
                                     authenticated: this.state.authenticated,
                                     user_id: this.state.user_id,
                                     user: this.state.user,
+                                    backURL: '/',
                                   }
                                 }}
                                 className="nav-link" >Requests</Link>

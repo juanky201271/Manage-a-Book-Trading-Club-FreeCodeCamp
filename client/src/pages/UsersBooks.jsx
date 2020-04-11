@@ -19,6 +19,7 @@ class UsersBooks extends Component {
             authenticated: this.props.location.state.authenticated,
             user_id: this.props.location.state.user_id,
             user: this.props.location.state.user,
+            backURL: this.props.location.state.backURL,
         }
     }
     componentDidMount = async () => {
@@ -39,7 +40,7 @@ class UsersBooks extends Component {
     }
     render() {
       console.log('my books', this.state)
-        const { books, isLoading } = this.state
+        const { books, isLoading, authenticated, user_id, user, backURL, _id, } = this.state
         const columns = [
             {
                 Header: 'ID',
@@ -68,6 +69,7 @@ class UsersBooks extends Component {
                                     authenticated: this.state.authenticated,
                                     user_id: this.state.user_id,
                                     user: this.state.user,
+                                    backURL: `/user/${_id}/books`,
                                   }
                                 }}
                                 className="nav-link" >{props.original.user_id.screenName}</Link>
@@ -88,6 +90,7 @@ class UsersBooks extends Component {
                                       authenticated: this.state.authenticated,
                                       user_id: this.state.user_id,
                                       user: this.state.user,
+                                      backURL: `/user/${_id}/books`,
                                     }
                                   }}
                                   className="nav-link" >Requests</Link>
@@ -124,6 +127,14 @@ class UsersBooks extends Component {
                 {isLoading && (
                     <h3>Loading Books</h3>
                 )}
+                <Link to={{ pathname: backURL || '/',
+                            state: {
+                              authenticated: authenticated,
+                              user_id: user_id,
+                              user: user,
+                              backURL: `/user/${_id}/books`,
+                            }
+                          }} className="btn btn-danger" ref={this.cancelButtonRef}>Back</Link>
             </Wrapper>
         )
     }

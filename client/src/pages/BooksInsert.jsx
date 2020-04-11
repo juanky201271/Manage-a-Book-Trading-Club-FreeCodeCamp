@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import api from '../api'
 import styled from 'styled-components'
 
@@ -13,9 +14,6 @@ const InputText = styled.input.attrs({ className: 'form-control', })`
 const Button = styled.button.attrs({ className: `btn btn-primary`, })`
     margin: 15px 15px 15px 5px;
 `
-const CancelButton = styled.a.attrs({ className: `btn btn-danger`, })`
-    margin: 15px 15px 15px 5px;
-`
 
 class BooksInsert extends Component {
     constructor(props) {
@@ -24,9 +22,11 @@ class BooksInsert extends Component {
           authenticated: this.props.location.state.authenticated,
           user_id: this.props.location.state.user_id,
           user: this.props.location.state.user,
+          backURL: this.props.location.state.backURL,
           title: '',
           author: '',
         }
+        this.cancelButtonRef = React.createRef()
     }
     handleChangeInputTitle = event => {
         const title = event.target.value
@@ -39,6 +39,7 @@ class BooksInsert extends Component {
     handleIncludeBook = async (event) => {
         event.preventDefault();
         const { title, author, user_id, } = this.state
+        if (!title || !author) return
 
         const payload = { title: title, author: author, user_id: user_id }
 
@@ -53,11 +54,11 @@ class BooksInsert extends Component {
           console.log(error)
         })
 
-        window.location.href = '/'
+        this.cancelButtonRef.current.click()
     }
     render() {
       console.log('insert', this.state)
-        const { title, author } = this.state
+        const { title, author, authenticated, user_id, user, backURL, } = this.state
         return (
             <Wrapper>
                 <Title>Create Book</Title>
@@ -77,7 +78,14 @@ class BooksInsert extends Component {
                 />
 
                 <Button onClick={this.handleIncludeBook}>Add Book</Button>
-                <CancelButton href={'/'}>Cancel</CancelButton>
+                <Link to={{ pathname: backURL || '/',
+                            state: {
+                              authenticated: authenticated,
+                              user_id: user_id,
+                              user: user,
+                              backURL: '/mybooks',
+                            }
+                          }} className="btn btn-danger" ref={this.cancelButtonRef}>Cancel</Link>
             </Wrapper>
         )
     }

@@ -48,6 +48,7 @@ class MyBooksList extends Component {
             authenticated: this.props.location.state.authenticated,
             user_id: this.props.location.state.user_id,
             user: this.props.location.state.user,
+            backURL: '/mybooks'
         }
     }
     componentDidMount = async () => {
@@ -97,6 +98,7 @@ class MyBooksList extends Component {
                                     authenticated: this.state.authenticated,
                                     user_id: this.state.user_id,
                                     user: this.state.user,
+                                    backURL: '/mybooks',
                                   }
                                 }}
                                 className="nav-link" >{props.original.user_id.screenName}</Link>
@@ -132,6 +134,7 @@ class MyBooksList extends Component {
                                       authenticated: this.state.authenticated,
                                       user_id: this.state.user_id,
                                       user: this.state.user,
+                                      backURL: '/mybooks',
                                     }
                                   }}
                                   className="nav-link" >Update</Link>
@@ -152,6 +155,7 @@ class MyBooksList extends Component {
                                       authenticated: this.state.authenticated,
                                       user_id: this.state.user_id,
                                       user: this.state.user,
+                                      backURL: '/mybooks',
                                     }
                                   }}
                                   className="nav-link" >Requests</Link>

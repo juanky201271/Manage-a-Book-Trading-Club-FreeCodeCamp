@@ -111,6 +111,7 @@ class MyRequestsList extends Component {
                                   authenticated: this.state.authenticated,
                                   user_id: this.state.user_id,
                                   user: this.state.user,
+                                  backURL: '/myrequests',
                                 }
                               }}
                               className="nav-link" >{props.original.user_id.screenName}</Link>

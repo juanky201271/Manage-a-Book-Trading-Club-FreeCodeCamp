@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import api from '../api'
 import styled from 'styled-components'
 
@@ -28,9 +29,6 @@ const Label = styled.label` margin: 5px; `
 const Button = styled.button.attrs({ className: `btn btn-primary`, })`
     margin: 15px 15px 15px 5px;
 `
-const CancelButton = styled.a.attrs({ className: `btn btn-danger`, })`
-    margin: 15px 15px 15px 5px;
-`
 const InputRadio = styled.input.attrs({ type: 'radio', })`
     margin: 5px;
 `
@@ -47,7 +45,9 @@ class RequestsInsert extends Component {
             authenticated: this.props.location.state.authenticated,
             user_id: this.props.location.state.user_id,
             user: this.props.location.state.user,
+            backURL: this.props.location.state.backURL,
         }
+        this.cancelButtonRef = React.createRef()
     }
     handleChangeInputGive = event => {
         const give_book_id = event.target.id
@@ -74,7 +74,7 @@ class RequestsInsert extends Component {
           console.log(error)
         })
 
-        window.location.href = '/'
+        this.cancelButtonRef.current.click()
     }
     componentDidMount = async () => {
       const { user_id, } = this.state
@@ -113,7 +113,7 @@ class RequestsInsert extends Component {
     }
     render() {
       console.log('insert', this.state)
-        const { arrayBooksGive, arrayBooksTake, } = this.state
+        const { arrayBooksGive, arrayBooksTake, authenticated, user_id, user, backURL, } = this.state
         return (
             <Wrapper>
                 <Title>Create Request</Title>
@@ -128,7 +128,14 @@ class RequestsInsert extends Component {
                   </WrapperRigth>
                 </WrapperRow>
                 <Button onClick={this.handleIncludeRequest}>Add Request</Button>
-                <CancelButton href={'/'}>Cancel</CancelButton>
+                <Link to={{ pathname: backURL || '/',
+                            state: {
+                              authenticated: authenticated,
+                              user_id: user_id,
+                              user: user,
+                              backURL: '/myrequests',
+                            }
+                          }} className="btn btn-danger" ref={this.cancelButtonRef}>Cancel</Link>
             </Wrapper>
         )
     }

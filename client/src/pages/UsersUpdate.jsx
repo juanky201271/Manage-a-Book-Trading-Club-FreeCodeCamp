@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import api from '../api'
 import styled from 'styled-components'
 
@@ -15,9 +16,6 @@ const InputText = styled.input.attrs({ className: 'form-control', })`
 const Button = styled.button.attrs({ className: `btn btn-primary`, })`
     margin: 15px 15px 15px 5px;
     display: initial;
-`
-const CancelButton = styled.a.attrs({ className: `btn btn-danger`, })`
-    margin: 15px 15px 15px 5px;
 `
 
 class UsersUpdate extends Component {
@@ -36,6 +34,7 @@ class UsersUpdate extends Component {
             authenticated: this.props.location.state.authenticated,
             user_id: this.props.location.state.user_id,
             user: this.props.location.state.user,
+            backURL: this.props.location.state.backURL,
         }
         this.updateButtonRef = React.createRef()
     }
@@ -73,7 +72,7 @@ class UsersUpdate extends Component {
         console.log(error)
       })
 
-      window.location.href = '/'
+      this.cancelButtonRef.current.click()
     }
     componentDidMount = async () => {
       var { _id } = this.state
@@ -109,6 +108,7 @@ class UsersUpdate extends Component {
     render() {
         console.log('update', this.state)
         const { twitterId, name, screenName, fullName, city, state, address, readOnly, } = this.state
+        const { authenticated, user_id, user, backURL, } = this.state
 
         return (
             <Wrapper>
@@ -202,7 +202,14 @@ class UsersUpdate extends Component {
                 }
 
                 <Button id="updateButton" onClick={this.handleUpdateUser} ref={this.updateButtonRef}>Update User</Button>
-                <CancelButton href={'/'}>Cancel</CancelButton>
+                <Link to={{ pathname: backURL || '/',
+                            state: {
+                              authenticated: authenticated,
+                              user_id: user_id,
+                              user: user,
+                              backURL: '/users'
+                            }
+                          }} className="btn btn-danger" ref={this.cancelButtonRef}>Cancel</Link>
             </Wrapper>
         )
     }

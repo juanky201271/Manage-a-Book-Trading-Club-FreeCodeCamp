@@ -20,6 +20,7 @@ class BooksRequests extends Component {
             authenticated: this.props.location.state.authenticated,
             user_id: this.props.location.state.user_id,
             user: this.props.location.state.user,
+            backURL: this.props.location.state.backURL,
         }
     }
     componentDidMount = async () => {
@@ -51,7 +52,7 @@ class BooksRequests extends Component {
     }
     render() {
       console.log('requests', this.state)
-        const { requestsGive, requestsTake, isLoading } = this.state
+        const { requestsGive, requestsTake, isLoading, authenticated, user_id, user, backURL, _id } = this.state
         const requests = [...requestsGive, ...requestsTake]
         const columns = [
             {
@@ -103,6 +104,7 @@ class BooksRequests extends Component {
                                     authenticated: this.state.authenticated,
                                     user_id: this.state.user_id,
                                     user: this.state.user,
+                                    backURL: `/book/${_id}/requests`,
                                   }
                                 }}
                                 className="nav-link" >{props.original.user_id.screenName}</Link>
@@ -139,6 +141,14 @@ class BooksRequests extends Component {
                 {isLoading && (
                     <h3>Loading Books</h3>
                 )}
+                <Link to={{ pathname: backURL || '/',
+                            state: {
+                              authenticated: authenticated,
+                              user_id: user_id,
+                              user: user,
+                              backURL: `/book/${_id}/requests`,
+                            }
+                          }} className="btn btn-danger" ref={this.cancelButtonRef}>Back</Link>
             </Wrapper>
         )
     }

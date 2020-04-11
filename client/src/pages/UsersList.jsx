@@ -88,6 +88,7 @@ class UsersList extends Component {
                                   authenticated: this.state.authenticated,
                                   user_id: this.state.user_id,
                                   user: this.state.user,
+                                  backURL: '/users'
                                 }
                               }}
                               className="nav-link" >Requests</Link>
@@ -108,6 +109,7 @@ class UsersList extends Component {
                                   authenticated: this.state.authenticated,
                                   user_id: this.state.user_id,
                                   user: this.state.user,
+                                  backURL: '/users'
                                 }
                               }}
                               className="nav-link" >Books</Link>

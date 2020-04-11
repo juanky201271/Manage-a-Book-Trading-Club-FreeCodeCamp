@@ -19,6 +19,7 @@ class UsersRequests extends Component {
             authenticated: this.props.location.state.authenticated,
             user_id: this.props.location.state.user_id,
             user: this.props.location.state.user,
+            backURL: this.props.location.state.backURL,
         }
     }
     componentDidMount = async () => {
@@ -39,7 +40,7 @@ class UsersRequests extends Component {
     }
     render() {
       console.log('requests', this.state)
-        const { requests, isLoading } = this.state
+        const { requests, isLoading, authenticated, user_id, user, backURL, _id, } = this.state
         const columns = [
             {
                 Header: 'ID',
@@ -90,6 +91,7 @@ class UsersRequests extends Component {
                                     authenticated: this.state.authenticated,
                                     user_id: this.state.user_id,
                                     user: this.state.user,
+                                    backURL: `/user/${_id}/requests`,
                                   }
                                 }}
                                 className="nav-link" >{props.original.user_id.screenName}</Link>
@@ -126,6 +128,14 @@ class UsersRequests extends Component {
                 {isLoading && (
                     <h3>Loading Users</h3>
                 )}
+                <Link to={{ pathname: backURL || '/',
+                            state: {
+                              authenticated: authenticated,
+                              user_id: user_id,
+                              user: user,
+                              backURL: `/user/${_id}/books`,
+                            }
+                          }} className="btn btn-danger" ref={this.cancelButtonRef}>Back</Link>
             </Wrapper>
         )
     }

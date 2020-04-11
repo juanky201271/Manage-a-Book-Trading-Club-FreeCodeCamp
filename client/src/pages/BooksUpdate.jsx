@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import api from '../api'
 import styled from 'styled-components'
 
@@ -16,9 +17,9 @@ const Button = styled.button.attrs({ className: `btn btn-primary`, })`
     margin: 15px 15px 15px 5px;
     display: initial;
 `
-const CancelButton = styled.a.attrs({ className: `btn btn-danger`, })`
-    margin: 15px 15px 15px 5px;
-`
+//const CancelButton = styled.Link.attrs({ className: `btn btn-danger`, })`
+//    margin: 15px 15px 15px 5px;
+//`
 
 class BooksUpdate extends Component {
     constructor(props) {
@@ -30,8 +31,10 @@ class BooksUpdate extends Component {
             authenticated: this.props.location.state.authenticated,
             user_id: this.props.location.state.user_id,
             user: this.props.location.state.user,
+            backURL: this.props.location.state.backURL,
         }
         this.updateButtonRef = React.createRef()
+        this.cancelButtonRef = React.createRef()
     }
     handleChangeInputTitle = event => {
         const title = event.target.value
@@ -57,7 +60,7 @@ class BooksUpdate extends Component {
         console.log(error)
       })
 
-      window.location.href = '/'
+      this.cancelButtonRef.current.click()
     }
     componentDidMount = async () => {
       var { _id } = this.state
@@ -81,7 +84,7 @@ class BooksUpdate extends Component {
     }
     render() {
         console.log('update', this.state)
-        const { title, author, } = this.state
+        const { title, author, authenticated, user_id, user, backURL, } = this.state
 
         return (
             <Wrapper>
@@ -98,12 +101,18 @@ class BooksUpdate extends Component {
                 <InputText
                     type="text"
                     value={author}
-                    placeholder="Separate each one with '/'..."
                     onChange={this.handleChangeInputAuthor}
                 />
 
                 <Button id="updateButton" onClick={this.handleUpdateBook} ref={this.updateButtonRef}>Update Book</Button>
-                <CancelButton href={'/'}>Cancel</CancelButton>
+                <Link to={{ pathname: backURL || '/',
+                            state: {
+                              authenticated: authenticated,
+                              user_id: user_id,
+                              user: user,
+                              backURL: '/mybooks',
+                            }
+                          }} className="btn btn-danger" ref={this.cancelButtonRef}>Cancel</Link>
             </Wrapper>
         )
     }
