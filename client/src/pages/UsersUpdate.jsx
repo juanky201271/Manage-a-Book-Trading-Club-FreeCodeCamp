@@ -37,6 +37,7 @@ class UsersUpdate extends Component {
             backURL: this.props.location.state.backURL,
         }
         this.updateButtonRef = React.createRef()
+        this.cancelButtonRef = React.createRef()
     }
     handleChangeInputFullName = event => {
         const fullName = event.target.value

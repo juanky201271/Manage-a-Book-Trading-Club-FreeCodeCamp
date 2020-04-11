@@ -60,6 +60,7 @@ class RequestsInsert extends Component {
     handleIncludeRequest = async (event) => {
         event.preventDefault();
         const { give_book_id, take_book_id, take_ok, user_id, } = this.state
+        if (!give_book_id || !take_book_id) return
 
         const payload = { give_book_id: give_book_id, take_book_id: take_book_id, user_id: user_id, take_ok: take_ok }
 

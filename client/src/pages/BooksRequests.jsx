@@ -7,6 +7,9 @@ import 'react-table-6/react-table.css'
 
 const Wrapper = styled.div` padding: 0 40px 40px 40px; `
 const Title = styled.h1.attrs({ className: 'h1', })``
+const Label = styled.label`
+    margin: 5px;
+`
 
 class BooksRequests extends Component {
     constructor(props) {
@@ -21,11 +24,23 @@ class BooksRequests extends Component {
             user_id: this.props.location.state.user_id,
             user: this.props.location.state.user,
             backURL: this.props.location.state.backURL,
+            title: '',
+            author: '',
         }
     }
     componentDidMount = async () => {
         this.setState({ isLoading: true })
         const { _id } = this.state
+
+        await api.getBookById(_id).then(book => {
+          this.setState({
+            title: book.data.data.title,
+            author: book.data.data.author,
+          })
+        })
+        .catch(error => {
+          console.log(error)
+        })
 
         await api.getRequestsByGiveBookId(_id).then(requests => {
             this.setState({
@@ -52,7 +67,7 @@ class BooksRequests extends Component {
     }
     render() {
       console.log('requests', this.state)
-        const { requestsGive, requestsTake, isLoading, authenticated, user_id, user, backURL, _id } = this.state
+        const { requestsGive, requestsTake, isLoading, authenticated, user_id, user, backURL, _id, title, author, } = this.state
         const requests = [...requestsGive, ...requestsTake]
         const columns = [
             {
@@ -123,6 +138,8 @@ class BooksRequests extends Component {
         return (
             <Wrapper>
                 <Title>Requests</Title>
+                <Label>Book: {title} - {author}</Label>
+                <hr />
                 {showTable && !isLoading && (
                     <ReactTable
                         data={requests}

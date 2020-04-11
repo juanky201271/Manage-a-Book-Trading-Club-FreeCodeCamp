@@ -39,7 +39,7 @@ class UsersList extends Component {
     }
     render() {
       console.log('users', this.state)
-        const { users, isLoading } = this.state
+        const { users, isLoading, user_id, } = this.state
         const columns = [
           {
               Header: 'ID',
@@ -75,6 +75,27 @@ class UsersList extends Component {
               Header: 'Address',
               accessor: 'address',
               filterable: true,
+          },
+          {
+              Header: '',
+              accessor: '',
+              Cell: function(props) {
+                  return (
+                    <span>
+                      <React.Fragment>
+                        <Link to={{ pathname: `/user/${props.original._id}`,
+                                state: {
+                                  authenticated: this.state.authenticated,
+                                  user_id: this.state.user_id,
+                                  user: this.state.user,
+                                  backURL: '/users'
+                                }
+                              }}
+                              className="nav-link" >{ props.original._id === user_id  ? 'Update' : 'View'}</Link>
+                      </React.Fragment>
+                    </span>
+                  )
+              }.bind(this),
           },
           {
               Header: '',
