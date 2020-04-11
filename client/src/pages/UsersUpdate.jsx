@@ -58,7 +58,7 @@ class UsersUpdate extends Component {
     handleUpdateUser = async (event) => {
       event.preventDefault();
       const { _id, fullName, city, state, address, } = this.state
-      if (!fullName || !city || !atate || !address) return
+      if (!fullName || !city || !state || !address) return
 
       const payload = { fullName: fullName, city: city, state: state, address: address }
       await api.updateUserById(_id, payload).then(res => {
@@ -103,7 +103,7 @@ class UsersUpdate extends Component {
     render() {
         console.log('users update', this.state)
         const { twitterId, name, screenName, fullName, city, state, address, readOnly, } = this.state
-        const { authenticated, user_id, user, backURL, _id, isLoading, } = this.state
+        const { authenticated, user_id, user, backURL, _id, } = this.state
 
         return (
             <Wrapper>
