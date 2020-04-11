@@ -58,6 +58,7 @@ class UsersUpdate extends Component {
     handleUpdateUser = async (event) => {
       event.preventDefault();
       const { _id, fullName, city, state, address, } = this.state
+      if (!fullName || !city || !atate || !address) return
 
       const payload = { fullName: fullName, city: city, state: state, address: address }
       await api.updateUserById(_id, payload).then(res => {
