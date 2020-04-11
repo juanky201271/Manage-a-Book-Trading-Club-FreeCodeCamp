@@ -136,7 +136,7 @@ class MyBooksList extends Component {
                                       backURL: '/mybooks',
                                     }
                                   }}
-                                  className="nav-link" >Update</Link>
+                                  className="nav-link text-success" >Update</Link>
                           </React.Fragment>
                         </span>
                     )

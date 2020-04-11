@@ -20,7 +20,7 @@ class DeleteRequest extends Component {
         console.log(error)
       })
 
-      window.location.href = '/'
+      window.location.href = '/Requests'
     }
   }
   render() {

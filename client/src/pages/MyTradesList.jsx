@@ -7,7 +7,7 @@ import 'react-table-6/react-table.css'
 
 const Wrapper = styled.div` padding: 0 40px 40px 40px; `
 const Title = styled.h1.attrs({ className: 'h1', })``
-const Update = styled.div` color: #ff0000; cursor: pointer; `
+const Update = styled.div.attrs({ className: 'text-success' })` cursor: pointer; `
 
 class UpdateRequest extends Component {
   updateUser = async event => {
@@ -21,7 +21,7 @@ class UpdateRequest extends Component {
         console.log(error)
       })
 
-      window.location.href = '/'
+      window.location.href = '/trades'
     }
   }
   render() {

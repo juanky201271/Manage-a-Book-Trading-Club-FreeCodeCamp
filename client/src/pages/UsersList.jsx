@@ -91,7 +91,7 @@ class UsersList extends Component {
                                   backURL: '/users'
                                 }
                               }}
-                              className="nav-link" >{ props.original._id === user_id  ? 'Update' : 'View'}</Link>
+                              className={ props.original._id === user_id  ? 'nav-link text-success' : 'nav-link'} >{ props.original._id === user_id  ? 'Update' : 'View'}</Link>
                       </React.Fragment>
                     </span>
                   )
