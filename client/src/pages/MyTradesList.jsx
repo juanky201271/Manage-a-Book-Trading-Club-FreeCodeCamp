@@ -32,7 +32,8 @@ class TradesList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            trades: [],
+            tradesTrue: [],
+            tradesFalse: [],
             columns: [],
             isLoading: false,
             authenticated: this.props.location.state.authenticated,
@@ -43,10 +44,21 @@ class TradesList extends Component {
     componentDidMount = async () => {
         this.setState({ isLoading: true })
         const { user_id } = this.state
+
+        await api.getRequestsByTakeOk(true).then(trades => {
+          const myTrades = trades.data.data.filter((item, ind) => item.take_book_id.user_id._id === user_id)
+          this.setState({
+              tradesTrue: myTrades,
+          })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+
         await api.getRequestsByTakeOk(false).then(trades => {
           const myTrades = trades.data.data.filter((item, ind) => item.take_book_id.user_id._id === user_id)
           this.setState({
-              trades: myTrades,
+              tradesFalse: myTrades,
               isLoading: false,
           })
         })
@@ -60,7 +72,8 @@ class TradesList extends Component {
     }
     render() {
       console.log('my trades', this.state)
-        const { trades, isLoading } = this.state
+        const { tradesTrue, tradesFalse, isLoading } = this.state
+        const trades = [...tradesTrue, ...tradesFalse]
         const columns = [
           {
               Header: 'ID',
