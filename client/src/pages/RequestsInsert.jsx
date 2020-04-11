@@ -44,6 +44,9 @@ class RequestsInsert extends Component {
             take_ok: false,
             arrayBooksGive: [],
             arrayBooksTake: [],
+            authenticated: this.props.location.state.authenticated,
+            user_id: this.props.location.state.user_id,
+            user: this.props.location.state.user,
         }
     }
     handleChangeInputGive = event => {
@@ -56,8 +59,7 @@ class RequestsInsert extends Component {
     }
     handleIncludeRequest = async (event) => {
         event.preventDefault();
-        const { give_book_id, take_book_id, take_ok, } = this.state
-        const { user_id, } = this.props.location.state
+        const { give_book_id, take_book_id, take_ok, user_id, } = this.state
 
         const payload = { give_book_id: give_book_id, take_book_id: take_book_id, user_id: user_id, take_ok: take_ok }
 
@@ -75,7 +77,7 @@ class RequestsInsert extends Component {
         window.location.href = '/'
     }
     componentDidMount = async () => {
-      const { user_id, } = this.props.location.state
+      const { user_id, } = this.state
 
       await api.getBooksByUserId(user_id).then(books => {
         const arrayBooksGive = books.data.data.map((item, ind) =>

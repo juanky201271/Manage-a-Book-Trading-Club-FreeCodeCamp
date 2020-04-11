@@ -35,12 +35,15 @@ class MyRequestsList extends Component {
             requests: [],
             columns: [],
             isLoading: false,
+            authenticated: this.props.location.state.authenticated,
+            user_id: this.props.location.state.user_id,
+            user: this.props.location.state.user,
         }
     }
     componentDidMount = async () => {
       this.setState({ isLoading: true })
 
-      const { user_id } = this.props.location.state
+      const { user_id } = this.state
       await api.getRequestsByUserId(user_id).then(requests => {
         this.setState({
             requests: requests.data.data,
@@ -124,9 +127,9 @@ class MyRequestsList extends Component {
                         <span>
                             <DeleteRequest
                               _id={props.original._id}
-                              authenticated={this.props.location.state.authenticated}
-                              user_id={this.props.location.state.user_id}
-                              user={this.props.location.state.user} />
+                              authenticated={this.state.authenticated}
+                              user_id={this.state.user_id}
+                              user={this.state.user} />
                         </span>
                     )
                 }.bind(this),

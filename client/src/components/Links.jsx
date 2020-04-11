@@ -8,6 +8,14 @@ const Item = styled.div.attrs({ className: "collapse navbar-collapse" })``
 const Log = styled.div.attrs({ className: "navbar-brand" })`
   cursor: pointer;
 `
+const Name = styled.div`
+  color: #fff;
+  background: #666;
+  padding: 5px;
+`
+const Pic = styled.img`
+  width: 30px;
+`
 
 class Links extends Component {
   constructor(props) {
@@ -29,6 +37,8 @@ class Links extends Component {
   render() {
     console.log('links', this.state)
     const { authenticated, user_id, user, } = this.state
+    const name = user.name || ''
+    const profileImageUrl = user.profileImageUrl || ''
     return (
       <React.Fragment>
         <Link to={{ pathname: "/",
@@ -213,6 +223,41 @@ class Links extends Component {
               </Log>
             )
           }
+
+
+            <List>
+
+              <Item>
+                <Link to={{ pathname: `/user/${user_id}`,
+                            state: {
+                              authenticated: authenticated,
+                              user_id: user_id,
+                              user: user,
+                            }
+                          }}
+                  className="nav-link"
+                >
+                  <Name>{name}</Name>
+                </Link>
+              </Item>
+
+              <Item>
+                <Link to={{ pathname: `/user/${user_id}`,
+                            state: {
+                              authenticated: authenticated,
+                              user_id: user_id,
+                              user: user,
+                            }
+                          }}
+                  className="nav-link"
+                >
+                  <Pic src={profileImageUrl}></Pic>
+                </Link>
+              </Item>
+
+            </List>
+
+
         </Collapse>
       </React.Fragment>
     )

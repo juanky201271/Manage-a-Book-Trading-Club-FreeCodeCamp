@@ -21,8 +21,11 @@ class BooksInsert extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            title: '',
-            author: '',
+          authenticated: this.props.location.state.authenticated,
+          user_id: this.props.location.state.user_id,
+          user: this.props.location.state.user,
+          title: '',
+          author: '',
         }
     }
     handleChangeInputTitle = event => {
@@ -35,8 +38,7 @@ class BooksInsert extends Component {
     }
     handleIncludeBook = async (event) => {
         event.preventDefault();
-        const { title, author, } = this.state
-        const { user_id, } = this.props.location.state
+        const { title, author, user_id, } = this.state
 
         const payload = { title: title, author: author, user_id: user_id }
 

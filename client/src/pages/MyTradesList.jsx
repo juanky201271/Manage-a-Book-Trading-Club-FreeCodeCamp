@@ -146,9 +146,9 @@ class TradesList extends Component {
                       <span>
                           <UpdateRequest
                             _id={props.original._id}
-                            authenticated={this.props.location.state.authenticated}
-                            user_id={this.props.location.state.user_id}
-                            user={this.props.location.state.user} />
+                            authenticated={this.state.authenticated}
+                            user_id={this.state.user_id}
+                            user={this.state.user} />
                       </span>
                   )
               }.bind(this),

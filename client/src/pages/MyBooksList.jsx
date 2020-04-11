@@ -45,12 +45,14 @@ class MyBooksList extends Component {
             books: [],
             columns: [],
             isLoading: false,
+            authenticated: this.props.location.state.authenticated,
+            user_id: this.props.location.state.user_id,
+            user: this.props.location.state.user,
         }
     }
     componentDidMount = async () => {
       this.setState({ isLoading: true })
-
-      const { user_id } = this.props.location.state
+      const { user_id } = this.state
       await api.getBooksByUserId(user_id).then(books => {
         this.setState({
             books: books.data.data,
@@ -63,7 +65,6 @@ class MyBooksList extends Component {
             isLoading: false,
         })
       })
-
     }
     render() {
       console.log('my books', this.state)
@@ -93,9 +94,9 @@ class MyBooksList extends Component {
                         <React.Fragment>
                           <Link to={{ pathname: `/user/${props.original.user_id._id}`,
                                   state: {
-                                    authenticated: this.props.location.state.authenticated,
-                                    user_id: this.props.location.state.user_id,
-                                    user: this.props.location.state.user,
+                                    authenticated: this.state.authenticated,
+                                    user_id: this.state.user_id,
+                                    user: this.state.user,
                                   }
                                 }}
                                 className="nav-link" >{props.original.user_id.screenName}</Link>
@@ -112,9 +113,9 @@ class MyBooksList extends Component {
                         <span>
                             <DeleteBook
                               _id={props.original._id}
-                              authenticated={this.props.location.state.authenticated}
-                              user_id={this.props.location.state.user_id}
-                              user={this.props.location.state.user} />
+                              authenticated={this.state.authenticated}
+                              user_id={this.state.user_id}
+                              user={this.state.user} />
                         </span>
                     )
                 }.bind(this),
@@ -128,9 +129,9 @@ class MyBooksList extends Component {
                           <React.Fragment>
                             <Link to={{ pathname: `/book/${props.original._id}/update`,
                                     state: {
-                                      authenticated: this.props.location.state.authenticated,
-                                      user_id: this.props.location.state.user_id,
-                                      user: this.props.location.state.user,
+                                      authenticated: this.state.authenticated,
+                                      user_id: this.state.user_id,
+                                      user: this.state.user,
                                     }
                                   }}
                                   className="nav-link" >Update</Link>
@@ -148,9 +149,9 @@ class MyBooksList extends Component {
                           <React.Fragment>
                             <Link to={{ pathname: `/book/${props.original._id}/requests`,
                                     state: {
-                                      authenticated: this.props.location.state.authenticated,
-                                      user_id: this.props.location.state.user_id,
-                                      user: this.props.location.state.user,
+                                      authenticated: this.state.authenticated,
+                                      user_id: this.state.user_id,
+                                      user: this.state.user,
                                     }
                                   }}
                                   className="nav-link" >Requests</Link>

@@ -32,8 +32,6 @@ class NavBar extends Component {
   render() {
     console.log('navbar', this.state)
     const { authenticated, user_id, user,  } = this.state
-    const name = user.name || ''
-    const profileImageUrl = user.profileImageUrl || ''
     return (
       <Container>
         <Nav>
@@ -44,20 +42,6 @@ class NavBar extends Component {
             user={user}
             handleNotAuthenticated={this._handleNotAuthenticated}
           />
-          { name ?
-            (
-              <Name>{name}</Name>
-            ) : (
-              <div></div>
-            )
-          }
-          { profileImageUrl ?
-            (
-              <Pic src={profileImageUrl}></Pic>
-            ) : (
-              <div></div>
-            )
-          }
         </Nav>
       </Container>
     )

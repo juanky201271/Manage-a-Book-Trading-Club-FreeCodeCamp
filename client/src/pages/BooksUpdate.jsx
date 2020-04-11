@@ -27,6 +27,9 @@ class BooksUpdate extends Component {
             _id: this.props.match.params._id,
             title: '',
             author: '',
+            authenticated: this.props.location.state.authenticated,
+            user_id: this.props.location.state.user_id,
+            user: this.props.location.state.user,
         }
         this.updateButtonRef = React.createRef()
     }
