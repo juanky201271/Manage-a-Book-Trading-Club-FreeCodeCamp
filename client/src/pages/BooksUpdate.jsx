@@ -74,13 +74,6 @@ class BooksUpdate extends Component {
         console.log(error)
       })
 
-      //const votesExists = votes.filter((ele, ind) => {
-      //  return ele > 0
-      //})
-      //if (votesExists.length > 0 && this.updateButtonRef.current) {
-      //  this.updateButtonRef.current.style.display = "none"
-      //}
-
     }
     render() {
         console.log('books update', this.state)

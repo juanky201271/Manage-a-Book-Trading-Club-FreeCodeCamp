@@ -15,7 +15,7 @@ const InputText = styled.input.attrs({ className: 'form-control', })`
 `
 const Button = styled.button.attrs({ className: `btn btn-primary`, })`
     margin: 15px 15px 15px 5px;
-    display: initial;
+    display: none;
 `
 
 class UsersUpdate extends Component {
@@ -78,11 +78,9 @@ class UsersUpdate extends Component {
     componentDidMount = async () => {
       var { _id } = this.state
       const { user_id } = this.props.location.state
+      var readOnly
       await api.getUserById(_id).then(user => {
-        const readOnly = user.data.data._id === user_id ? false : true
-        if (readOnly && this.updateButtonRef.current) {
-          this.updateButtonRef.current.style.display = "none"
-        }
+        readOnly = user.data.data._id === user_id ? false : true
         this.setState({
           twitterId: user.data.data.twitterId,
           name: user.data.data.name,
@@ -97,19 +95,14 @@ class UsersUpdate extends Component {
       .catch(error => {
         console.log(error)
       })
-
-      //const votesExists = votes.filter((ele, ind) => {
-      //  return ele > 0
-      //})
-      //if (votesExists.length > 0 && this.updateButtonRef.current) {
-      //  this.updateButtonRef.current.style.display = "none"
-      //}
-
+      if (!readOnly && this.updateButtonRef.current) {
+        this.updateButtonRef.current.style.display = "initial"
+      }
     }
     render() {
         console.log('users update', this.state)
         const { twitterId, name, screenName, fullName, city, state, address, readOnly, } = this.state
-        const { authenticated, user_id, user, backURL, _id, } = this.state
+        const { authenticated, user_id, user, backURL, _id, isLoading, } = this.state
 
         return (
             <Wrapper>

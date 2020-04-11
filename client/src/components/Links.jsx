@@ -234,9 +234,15 @@ class Links extends Component {
             )
           }
 
-            <List>
+          <List>
 
-              <Item>
+            {
+              profileImageUrl === '' ?
+              (
+                <div></div>
+              ) :
+              (
+                <Item>
                 <Link to={{ pathname: `/user/${user_id}`,
                             state: {
                               authenticated: authenticated,
@@ -249,9 +255,17 @@ class Links extends Component {
                 >
                   <Name>{name}</Name>
                 </Link>
-              </Item>
+                </Item>
+              )
+            }
 
-              <Item>
+            {
+              profileImageUrl === '' ?
+              (
+                <div></div>
+              ) :
+              (
+                <Item>
                 <Link to={{ pathname: `/user/${user_id}`,
                             state: {
                               authenticated: authenticated,
@@ -264,9 +278,11 @@ class Links extends Component {
                 >
                   <Pic src={profileImageUrl}></Pic>
                 </Link>
-              </Item>
+                </Item>
+              )
+            }
 
-            </List>
+          </List>
 
 
         </Collapse>
