@@ -33,6 +33,9 @@ class UsersUpdate extends Component {
             state: '',
             address: '',
             readOnly: true,
+            authenticated: this.props.location.state.authenticated,
+            user_id: this.props.location.state.user_id,
+            user: this.props.location.state.user,
         }
         this.updateButtonRef = React.createRef()
     }
