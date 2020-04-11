@@ -159,11 +159,18 @@ class TradesList extends Component {
               Cell: function(props) {
                   return (
                       <span>
-                          <UpdateRequest
-                            _id={props.original._id}
-                            authenticated={this.state.authenticated}
-                            user_id={this.state.user_id}
-                            user={this.state.user} />
+                        {
+                          props.original.take_ok ?
+                          (
+                            <div></div>
+                          ) : (
+                            <UpdateRequest
+                              _id={props.original._id}
+                              authenticated={this.state.authenticated}
+                              user_id={this.state.user_id}
+                              user={this.state.user} />
+                          )
+                        }
                       </span>
                   )
               }.bind(this),
