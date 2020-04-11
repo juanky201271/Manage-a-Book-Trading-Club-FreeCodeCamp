@@ -42,6 +42,11 @@ app.use(
   )
 )
 
+app.use((req, res, next) => {
+  res.setHeader('Cache-Control', 'no-cache, no-store')
+  next()
+})
+
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
