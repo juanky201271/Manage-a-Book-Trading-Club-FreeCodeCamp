@@ -11,6 +11,11 @@ import { BooksList,
          RequestsInsert,
          MyRequestsList,
          UsersList,
+         UsersBooks,
+         UsersRequests,
+         UsersUpdate,
+         TradesList,
+         MyTradesList,
        } from '../pages'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -91,6 +96,11 @@ class App extends Component {
               <Route path="/request/insert" exact component={RequestsInsert} />
               <Route path="/myrequests" exact component={MyRequestsList} />
               <Route path="/users" exact component={UsersList} />
+              <Route path="/user/:_id" exact component={UsersUpdate} />
+              <Route path="/user/:_id/books" exact component={UsersBooks} />
+              <Route path="/user/:_id/requests" exact component={UsersRequests} />
+              <Route path="/trades" exact component={TradesList} />
+              <Route path="/mytrades" exact component={MyTradesList} />
             </Switch>
           </>
          )
@@ -107,6 +117,10 @@ class App extends Component {
               <Route path="/requests" exact component={RequestsList} />
               <Route path="/book/:_id/requests" exact component={BooksRequests} />
               <Route path="/users" exact component={UsersList} />
+              <Route path="/user/:_id" exact component={UsersUpdate} />
+              <Route path="/user/:_id/books" exact component={UsersBooks} />
+              <Route path="/user/:_id/requests" exact component={UsersRequests} />
+              <Route path="/trades" exact component={TradesList} />
             </Switch>
           </>
          )

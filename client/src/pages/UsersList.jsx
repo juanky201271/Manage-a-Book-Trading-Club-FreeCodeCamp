@@ -76,6 +76,46 @@ class UsersList extends Component {
               accessor: 'address',
               filterable: true,
           },
+          {
+              Header: '',
+              accessor: '',
+              Cell: function(props) {
+                  return (
+                    <span>
+                      <React.Fragment>
+                        <Link to={{ pathname: `/user/${props.original._id}/requests`,
+                                state: {
+                                  authenticated: this.state.authenticated,
+                                  user_id: this.state.user_id,
+                                  user: this.state.user,
+                                }
+                              }}
+                              className="nav-link" >Requests</Link>
+                      </React.Fragment>
+                    </span>
+                  )
+              }.bind(this),
+          },
+          {
+              Header: '',
+              accessor: '',
+              Cell: function(props) {
+                  return (
+                    <span>
+                      <React.Fragment>
+                        <Link to={{ pathname: `/user/${props.original._id}/books`,
+                                state: {
+                                  authenticated: this.state.authenticated,
+                                  user_id: this.state.user_id,
+                                  user: this.state.user,
+                                }
+                              }}
+                              className="nav-link" >Books</Link>
+                      </React.Fragment>
+                    </span>
+                  )
+              }.bind(this),
+          },
         ]
 
         let showTable = true

@@ -7,12 +7,32 @@ import 'react-table-6/react-table.css'
 
 const Wrapper = styled.div` padding: 0 40px 40px 40px; `
 const Title = styled.h1.attrs({ className: 'h1', })``
+const Update = styled.div` color: #ff0000; cursor: pointer; `
 
-class RequestsList extends Component {
+class UpdateRequest extends Component {
+  updateUser = async event => {
+    event.preventDefault()
+    const { _id, } = this.props
+    if (window.confirm(`Do tou want to acept the request of the book ${_id} ?`,)) {
+
+      const payload = { take_ok: true }
+      await api.updateRequestById(_id, payload)
+      .catch(error => {
+        console.log(error)
+      })
+
+      window.location.href = '/'
+    }
+  }
+  render() {
+    return <Update onClick={this.updateUser}>Acept Request</Update>
+  }
+}
+class TradesList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            requests: [],
+            trades: [],
             columns: [],
             isLoading: false,
             authenticated: this.props.location.state.authenticated,
@@ -22,10 +42,11 @@ class RequestsList extends Component {
     }
     componentDidMount = async () => {
         this.setState({ isLoading: true })
-
-        await api.getAllRequests().then(requests => {
+        const { user_id } = this.state
+        await api.getRequestsByTakeOk(false).then(trades => {
+          const myTrades = trades.data.data.filter((item, ind) => item.take_book_id.user_id._id === user_id)
           this.setState({
-              requests: requests.data.data,
+              trades: myTrades,
               isLoading: false,
           })
         })
@@ -38,8 +59,8 @@ class RequestsList extends Component {
 
     }
     render() {
-      console.log('requests', this.state)
-        const { requests, isLoading } = this.state
+      console.log('trades', this.state)
+        const { trades, isLoading } = this.state
         const columns = [
           {
               Header: 'ID',
@@ -47,23 +68,27 @@ class RequestsList extends Component {
               filterable: true,
           },
           {
-              Header: 'Give',
+              Header: 'The User',
               accessor: '',
               Cell: function(props) {
                   return (
                     <span>
                       <React.Fragment>
-                        <div>
-                          {props.original.give_book_id.title}<br />
-                          {props.original.give_book_id.author}
-                        </div>
+                        <Link to={{ pathname: `/user/${props.original.user_id._id}`,
+                                state: {
+                                  authenticated: this.state.authenticated,
+                                  user_id: this.state.user_id,
+                                  user: this.state.user,
+                                }
+                              }}
+                              className="nav-link" >{props.original.user_id.screenName}</Link>
                       </React.Fragment>
                     </span>
                   )
-              },
+              }.bind(this),
           },
           {
-              Header: 'Take',
+              Header: 'Wants to Take',
               accessor: '',
               Cell: function(props) {
                   return (
@@ -85,32 +110,62 @@ class RequestsList extends Component {
                   return (
                     <span>
                       <React.Fragment>
-                        <Link to={{ pathname: `/user/${props.original.user_id._id}`,
+                        <Link to={{ pathname: `/user/${props.original.take_book_id.user_id._id}`,
                                 state: {
                                   authenticated: this.state.authenticated,
                                   user_id: this.state.user_id,
                                   user: this.state.user,
                                 }
                               }}
-                              className="nav-link" >{props.original.user_id.screenName}</Link>
+                              className="nav-link" >{props.original.take_book_id.user_id.screenName}</Link>
                       </React.Fragment>
                     </span>
+                  )
+              }.bind(this),
+          },
+          {
+              Header: 'State of Trade',
+              accessor: '',
+              Cell: function(props) {
+                  return (
+                    <span>
+                      <React.Fragment>
+                        <div>
+                          {props.original.take_ok ? 'Acepted' : 'Pending'}
+                        </div>
+                      </React.Fragment>
+                    </span>
+                  )
+              },
+          },
+          {
+              Header: '',
+              accessor: '',
+              Cell: function(props) {
+                  return (
+                      <span>
+                          <UpdateRequest
+                            _id={props.original._id}
+                            authenticated={this.props.location.state.authenticated}
+                            user_id={this.props.location.state.user_id}
+                            user={this.props.location.state.user} />
+                      </span>
                   )
               }.bind(this),
           },
         ]
 
         let showTable = true
-        if (!requests.length) {
+        if (!trades.length) {
             showTable = false
         }
 
         return (
             <Wrapper>
-                <Title>Requests</Title>
+                <Title>My Trades</Title>
                 {showTable && !isLoading && (
                     <ReactTable
-                        data={requests}
+                        data={trades}
                         columns={columns}
                         loading={isLoading}
                         defaultPageSize={10}
@@ -124,11 +179,11 @@ class RequestsList extends Component {
                 )}
 
                 {isLoading && (
-                    <h3>Loading Requests</h3>
+                    <h3>Loading Trades</h3>
                 )}
             </Wrapper>
         )
     }
 }
 
-export default RequestsList
+export default TradesList

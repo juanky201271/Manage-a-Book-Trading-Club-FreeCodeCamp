@@ -8,51 +8,35 @@ import 'react-table-6/react-table.css'
 const Wrapper = styled.div` padding: 0 40px 40px 40px; `
 const Title = styled.h1.attrs({ className: 'h1', })``
 
-class BooksRequests extends Component {
+class UsersRequests extends Component {
     constructor(props) {
         super(props)
         this.state = {
             _id: this.props.match.params._id,
-            requestsGive: [],
-            requestsTake: [],
+            requests: [],
             columns: [],
             isLoading: false,
-            authenticated: '',
-            user_id: '',
-            user: '',
         }
     }
     componentDidMount = async () => {
-        this.setState({ isLoading: true })
-        const { _id } = this.state
-
-        await api.getRequestsByGiveBookId(_id).then(requests => {
-            this.setState({
-                requestsGive: requests.data.data,
-            })
-        })
-        .catch(error => {
-          console.log(error)
-        })
-
-        await api.getRequestsByTakeBookId(_id).then(requests => {
-            this.setState({
-                requestsTake: requests.data.data,
-                isLoading: false,
-            })
-        })
-        .catch(error => {
-          console.log(error)
+      this.setState({ isLoading: true })
+      const { _id } = this.state
+      await api.getRequestsByUserId(_id).then(requests => {
           this.setState({
+              requests: requests.data.data,
               isLoading: false,
           })
+      })
+      .catch(error => {
+        console.log(error)
+        this.setState({
+            isLoading: false,
         })
-
+      })
     }
     render() {
       console.log('requests', this.state)
-        const { requestsGive, requestsTake, isLoading } = this.state
-        const requests = [...requestsGive, ...requestsTake]
+        const { requests, isLoading } = this.state
         const columns = [
             {
                 Header: 'ID',
@@ -137,11 +121,11 @@ class BooksRequests extends Component {
                 )}
 
                 {isLoading && (
-                    <h3>Loading Books</h3>
+                    <h3>Loading Users</h3>
                 )}
             </Wrapper>
         )
     }
 }
 
-export default BooksRequests
+export default UsersRequests

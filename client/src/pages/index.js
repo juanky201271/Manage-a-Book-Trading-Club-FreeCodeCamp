@@ -9,6 +9,12 @@ import RequestsInsert from './RequestsInsert'
 import MyRequestsList from './MyRequestsList'
 
 import UsersList from './UsersList'
+import UsersUpdate from './UsersUpdate'
+import UsersBooks from './UsersBooks'
+import UsersRequests from './UsersRequests'
+
+import TradesList from './TradesList'
+import MyTradesList from './MyTradesList'
 
 export { BooksList,
          BooksInsert,
@@ -21,4 +27,10 @@ export { BooksList,
          MyRequestsList,
 
          UsersList,
+         UsersUpdate,
+         UsersBooks,
+         UsersRequests,
+
+         TradesList,
+         MyTradesList,
         }

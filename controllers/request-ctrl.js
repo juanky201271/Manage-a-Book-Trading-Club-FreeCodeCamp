@@ -82,6 +82,10 @@ getRequestById = async (req, res) => {
     .populate('give_book_id')
     .populate('take_book_id')
     .populate('user_id')
+    .populate({
+      path: 'take_book_id',
+      populate: { path: 'user_id' }
+    })
     .exec((err, request) => {
       if (err) {
         return res.status(400).json({ success: false, error: err, })
@@ -102,6 +106,10 @@ getRequests = async (req, res) => {
     .populate('give_book_id')
     .populate('take_book_id')
     .populate('user_id')
+    .populate({
+      path: 'take_book_id',
+      populate: { path: 'user_id' }
+    })
     .exec((err, requests) => {
       if (err) {
         return res.status(400).json({ success: false, error: err, })
@@ -122,6 +130,10 @@ getRequestsByUserId = async (req, res) => {
     .populate('give_book_id')
     .populate('take_book_id')
     .populate('user_id')
+    .populate({
+      path: 'take_book_id',
+      populate: { path: 'user_id' }
+    })
     .exec((err, request) => {
       if (err) {
         return res.status(400).json({ success: false, error: err, })
@@ -142,6 +154,10 @@ getRequestsByGiveBookId = async (req, res) => {
     .populate('give_book_id')
     .populate('take_book_id')
     .populate('user_id')
+    .populate({
+      path: 'take_book_id',
+      populate: { path: 'user_id' }
+    })
     .exec((err, request) => {
       if (err) {
         return res.status(400).json({ success: false, error: err, })
@@ -162,6 +178,10 @@ getRequestsByTakeBookId = async (req, res) => {
     .populate('give_book_id')
     .populate('take_book_id')
     .populate('user_id')
+    .populate({
+      path: 'take_book_id',
+      populate: { path: 'user_id' }
+    })
     .exec((err, request) => {
       if (err) {
         return res.status(400).json({ success: false, error: err, })
@@ -182,6 +202,10 @@ getRequestsByTakeOk = async (req, res) => {
     .populate('give_book_id')
     .populate('take_book_id')
     .populate('user_id')
+    .populate({
+      path: 'take_book_id',
+      populate: { path: 'user_id' }
+    })
     .exec((err, request) => {
       if (err) {
         return res.status(400).json({ success: false, error: err, })

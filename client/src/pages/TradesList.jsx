@@ -7,57 +7,39 @@ import 'react-table-6/react-table.css'
 
 const Wrapper = styled.div` padding: 0 40px 40px 40px; `
 const Title = styled.h1.attrs({ className: 'h1', })``
-const Delete = styled.div` color: #ff0000; cursor: pointer; `
 
-class DeleteRequest extends Component {
-  deleteUser = async event => {
-    event.preventDefault()
-    const { _id, } = this.props
-    if (window.confirm(`Do tou want to delete the request ${_id} permanently?`,)) {
-
-      await api.deleteRequestById(_id)
-      .catch(error => {
-        console.log(error)
-      })
-
-      window.location.href = '/'
-    }
-  }
-  render() {
-    return <Delete onClick={this.deleteUser}>Delete</Delete>
-  }
-}
-
-class MyRequestsList extends Component {
+class TradesList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            requests: [],
+            trades: [],
             columns: [],
             isLoading: false,
+            authenticated: this.props.location.state.authenticated,
+            user_id: this.props.location.state.user_id,
+            user: this.props.location.state.user,
         }
     }
     componentDidMount = async () => {
-      this.setState({ isLoading: true })
+        this.setState({ isLoading: true })
 
-      const { user_id } = this.props.location.state
-      await api.getRequestsByUserId(user_id).then(requests => {
-        this.setState({
-            requests: requests.data.data,
-            isLoading: false,
+        await api.getRequestsByTakeOk(true).then(trades => {
+          this.setState({
+              trades: trades.data.data,
+              isLoading: false,
+          })
         })
-      })
-      .catch(error => {
-        console.log(error)
-        this.setState({
-            isLoading: false,
+        .catch(error => {
+          console.log(error)
+          this.setState({
+              isLoading: false,
+          })
         })
-      })
 
     }
     render() {
-      console.log('my requests', this.state)
-        const { requests, isLoading } = this.state
+      console.log('trades', this.state)
+        const { trades, isLoading } = this.state
         const columns = [
           {
               Header: 'ID',
@@ -65,23 +47,27 @@ class MyRequestsList extends Component {
               filterable: true,
           },
           {
-              Header: 'Give',
+              Header: 'The User',
               accessor: '',
               Cell: function(props) {
                   return (
                     <span>
                       <React.Fragment>
-                        <div>
-                          {props.original.give_book_id.title}<br />
-                          {props.original.give_book_id.author}
-                        </div>
+                        <Link to={{ pathname: `/user/${props.original.user_id._id}`,
+                                state: {
+                                  authenticated: this.state.authenticated,
+                                  user_id: this.state.user_id,
+                                  user: this.state.user,
+                                }
+                              }}
+                              className="nav-link" >{props.original.user_id.screenName}</Link>
                       </React.Fragment>
                     </span>
                   )
-              },
+              }.bind(this),
           },
           {
-              Header: 'Take',
+              Header: 'Wants to Take',
               accessor: '',
               Cell: function(props) {
                   return (
@@ -103,47 +89,47 @@ class MyRequestsList extends Component {
                   return (
                     <span>
                       <React.Fragment>
-                        <Link to={{ pathname: `/user/${props.original.user_id._id}`,
+                        <Link to={{ pathname: `/user/${props.original.take_book_id.user_id._id}`,
                                 state: {
                                   authenticated: this.state.authenticated,
                                   user_id: this.state.user_id,
                                   user: this.state.user,
                                 }
                               }}
-                              className="nav-link" >{props.original.user_id.screenName}</Link>
+                              className="nav-link" >{props.original.take_book_id.user_id.screenName}</Link>
                       </React.Fragment>
                     </span>
                   )
               }.bind(this),
           },
-            {
-                Header: '',
-                accessor: '',
-                Cell: function(props) {
-                    return (
-                        <span>
-                            <DeleteRequest
-                              _id={props.original._id}
-                              authenticated={this.props.location.state.authenticated}
-                              user_id={this.props.location.state.user_id}
-                              user={this.props.location.state.user} />
-                        </span>
-                    )
-                }.bind(this),
-            },
+          {
+              Header: 'State of Trade',
+              accessor: '',
+              Cell: function(props) {
+                  return (
+                    <span>
+                      <React.Fragment>
+                        <div>
+                          {props.original.take_ok ? 'Acepted' : 'Pending'}
+                        </div>
+                      </React.Fragment>
+                    </span>
+                  )
+              },
+          },
         ]
 
         let showTable = true
-        if (!requests.length) {
+        if (!trades.length) {
             showTable = false
         }
 
         return (
             <Wrapper>
-                <Title>My Requests</Title>
+                <Title>Trades</Title>
                 {showTable && !isLoading && (
                     <ReactTable
-                        data={requests}
+                        data={trades}
                         columns={columns}
                         loading={isLoading}
                         defaultPageSize={10}
@@ -157,11 +143,11 @@ class MyRequestsList extends Component {
                 )}
 
                 {isLoading && (
-                    <h3>Loading Requests</h3>
+                    <h3>Loading Trades</h3>
                 )}
             </Wrapper>
         )
     }
 }
 
-export default MyRequestsList
+export default TradesList

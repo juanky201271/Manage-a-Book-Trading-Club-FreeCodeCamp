@@ -167,6 +167,40 @@ class Links extends Component {
               </Link>
             </Item>
 
+            <Item>
+              <Link to={{ pathname: "/trades",
+                          state: {
+                            authenticated: authenticated,
+                            user_id: user_id,
+                            user: user,
+                          }
+                        }}
+                className="nav-link"
+              >
+                Trades
+              </Link>
+            </Item>
+
+            <Item>
+              {
+                authenticated ? (
+                  <Link to={{ pathname: "/mytrades",
+                              state: {
+                                authenticated: authenticated,
+                                user_id: user_id,
+                                user: user,
+                              }
+                            }}
+                    className="nav-link"
+                  >
+                    My Trades
+                  </Link>
+                ) : (
+                  <div></div>
+                )
+              }
+            </Item>
+
           </List>
           {
             authenticated ? (
