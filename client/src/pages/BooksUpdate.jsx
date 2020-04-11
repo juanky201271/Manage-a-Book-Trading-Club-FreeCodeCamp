@@ -83,7 +83,7 @@ class BooksUpdate extends Component {
 
     }
     render() {
-        console.log('update', this.state)
+        console.log('books update', this.state)
         const { title, author, authenticated, user_id, user, backURL, _id } = this.state
 
         return (

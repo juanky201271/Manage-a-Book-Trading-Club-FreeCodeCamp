@@ -59,7 +59,7 @@ class TradesList extends Component {
 
     }
     render() {
-      console.log('trades', this.state)
+      console.log('my trades', this.state)
         const { trades, isLoading } = this.state
         const columns = [
           {

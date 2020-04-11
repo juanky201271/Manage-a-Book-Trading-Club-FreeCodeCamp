@@ -57,7 +57,7 @@ class UsersRequests extends Component {
       })
     }
     render() {
-      console.log('requests', this.state)
+      console.log('users requests', this.state)
         const { requests, isLoading, authenticated, user_id, user, backURL, _id, name, screenName, fullName, } = this.state
         const columns = [
             {

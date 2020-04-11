@@ -57,7 +57,7 @@ class UsersBooks extends Component {
       })
     }
     render() {
-      console.log('my books', this.state)
+      console.log('users books', this.state)
         const { books, isLoading, authenticated, user_id, user, backURL, _id, name, screenName, fullName, } = this.state
         const columns = [
             {

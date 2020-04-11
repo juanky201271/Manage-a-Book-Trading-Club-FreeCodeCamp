@@ -113,7 +113,7 @@ class RequestsInsert extends Component {
 
     }
     render() {
-      console.log('insert', this.state)
+      console.log('requests insert', this.state)
         const { arrayBooksGive, arrayBooksTake, authenticated, user_id, user, backURL, } = this.state
         return (
             <Wrapper>

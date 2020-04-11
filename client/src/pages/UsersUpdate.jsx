@@ -107,7 +107,7 @@ class UsersUpdate extends Component {
 
     }
     render() {
-        console.log('update', this.state)
+        console.log('users update', this.state)
         const { twitterId, name, screenName, fullName, city, state, address, readOnly, } = this.state
         const { authenticated, user_id, user, backURL, _id, } = this.state
 

@@ -66,7 +66,7 @@ class BooksRequests extends Component {
 
     }
     render() {
-      console.log('requests', this.state)
+      console.log('books requests', this.state)
         const { requestsGive, requestsTake, isLoading, authenticated, user_id, user, backURL, _id, title, author, } = this.state
         const requests = [...requestsGive, ...requestsTake]
         const columns = [
