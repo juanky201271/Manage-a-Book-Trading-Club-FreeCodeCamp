@@ -108,7 +108,7 @@ class UsersUpdate extends Component {
     render() {
         console.log('update', this.state)
         const { twitterId, name, screenName, fullName, city, state, address, readOnly, } = this.state
-        const { authenticated, user_id, user, backURL, } = this.state
+        const { authenticated, user_id, user, backURL, _id, } = this.state
 
         return (
             <Wrapper>
@@ -207,7 +207,7 @@ class UsersUpdate extends Component {
                               authenticated: authenticated,
                               user_id: user_id,
                               user: user,
-                              backURL: '/users'
+                              backURL: `/user/${_id}/update`
                             }
                           }} className="btn btn-danger" ref={this.cancelButtonRef}>Cancel</Link>
             </Wrapper>

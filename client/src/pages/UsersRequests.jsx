@@ -128,12 +128,13 @@ class UsersRequests extends Component {
                 {isLoading && (
                     <h3>Loading Users</h3>
                 )}
+                <hr />
                 <Link to={{ pathname: backURL || '/',
                             state: {
                               authenticated: authenticated,
                               user_id: user_id,
                               user: user,
-                              backURL: `/user/${_id}/books`,
+                              backURL: `/user/${_id}/requests`,
                             }
                           }} className="btn btn-danger" ref={this.cancelButtonRef}>Back</Link>
             </Wrapper>

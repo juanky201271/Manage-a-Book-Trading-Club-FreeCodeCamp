@@ -127,6 +127,7 @@ class UsersBooks extends Component {
                 {isLoading && (
                     <h3>Loading Books</h3>
                 )}
+                <hr />
                 <Link to={{ pathname: backURL || '/',
                             state: {
                               authenticated: authenticated,

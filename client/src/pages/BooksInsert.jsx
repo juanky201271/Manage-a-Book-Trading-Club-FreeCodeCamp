@@ -83,7 +83,7 @@ class BooksInsert extends Component {
                               authenticated: authenticated,
                               user_id: user_id,
                               user: user,
-                              backURL: '/mybooks',
+                              backURL: '/book/insert',
                             }
                           }} className="btn btn-danger" ref={this.cancelButtonRef}>Cancel</Link>
             </Wrapper>

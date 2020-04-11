@@ -48,7 +48,6 @@ class MyBooksList extends Component {
             authenticated: this.props.location.state.authenticated,
             user_id: this.props.location.state.user_id,
             user: this.props.location.state.user,
-            backURL: '/mybooks'
         }
     }
     componentDidMount = async () => {

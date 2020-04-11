@@ -133,7 +133,7 @@ class RequestsInsert extends Component {
                               authenticated: authenticated,
                               user_id: user_id,
                               user: user,
-                              backURL: '/myrequests',
+                              backURL: '/request/insert',
                             }
                           }} className="btn btn-danger" ref={this.cancelButtonRef}>Cancel</Link>
             </Wrapper>
