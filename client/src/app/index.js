@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 
 import { NavBar } from '../components'
 import { BooksList,
@@ -96,16 +96,14 @@ class App extends Component {
               <Route path="/request/insert" exact component={RequestsInsert} />
               <Route path="/myrequests" exact component={MyRequestsList} />
               <Route path="/users" exact component={UsersList} />
-
-
               <Route path="/user/:_id" render={(props) => (
-                <UsersUpdate key={props.match.params._id} {...props} />)
-              } />
-
+                <UsersUpdate key={props.match.params._id} {...props} />
+              )} />
               <Route path="/user/:_id/books" exact component={UsersBooks} />
               <Route path="/user/:_id/requests" exact component={UsersRequests} />
               <Route path="/trades" exact component={TradesList} />
               <Route path="/mytrades" exact component={MyTradesList} />
+              <Redirect to="/" />
             </Switch>
           </>
          )
@@ -126,6 +124,7 @@ class App extends Component {
               <Route path="/user/:_id/books" exact component={UsersBooks} />
               <Route path="/user/:_id/requests" exact component={UsersRequests} />
               <Route path="/trades" exact component={TradesList} />
+              <Redirect to="/" />
             </Switch>
           </>
          )
