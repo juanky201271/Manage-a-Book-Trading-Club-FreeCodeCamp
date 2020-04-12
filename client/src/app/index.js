@@ -96,7 +96,12 @@ class App extends Component {
               <Route path="/request/insert" exact component={RequestsInsert} />
               <Route path="/myrequests" exact component={MyRequestsList} />
               <Route path="/users" exact component={UsersList} />
-              <Route path="/user/:_id" exact component={UsersUpdate} />
+
+
+              <Route path="/user/:_id" render={(props) => (
+                <UsersUpdate key={props.match.params._id} {...props} />)
+              } />
+
               <Route path="/user/:_id/books" exact component={UsersBooks} />
               <Route path="/user/:_id/requests" exact component={UsersRequests} />
               <Route path="/trades" exact component={TradesList} />
@@ -114,8 +119,8 @@ class App extends Component {
             />
             <Switch>
               <Route path="/" exact component={BooksList} />
-              <Route path="/requests" exact component={RequestsList} />
               <Route path="/book/:_id/requests" exact component={BooksRequests} />
+              <Route path="/requests" exact component={RequestsList} />
               <Route path="/users" exact component={UsersList} />
               <Route path="/user/:_id" exact component={UsersUpdate} />
               <Route path="/user/:_id/books" exact component={UsersBooks} />

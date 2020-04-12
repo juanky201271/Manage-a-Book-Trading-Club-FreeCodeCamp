@@ -77,8 +77,8 @@ class UsersUpdate extends Component {
       this.cancelButtonRef.current.click()
     }
     componentDidMount = async () => {
-      var { _id } = this.state
-      const { user_id } = this.props.location.state
+      const { _id } = this.props.match.params
+      const { user_id } = this.state
       var readOnly
       await api.getUserById(_id).then(user => {
         readOnly = user.data.data._id === user_id ? false : true

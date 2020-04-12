@@ -237,7 +237,7 @@ class Links extends Component {
           <List>
 
             {
-              profileImageUrl === '' ?
+              name === '' ?
               (
                 <div></div>
               ) :
@@ -249,6 +249,7 @@ class Links extends Component {
                               user_id: user_id,
                               user: user,
                               backURL: '/users',
+                              key: new Date(),
                             }
                           }}
                   className="nav-link"
