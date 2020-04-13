@@ -6,7 +6,7 @@ class Logo extends Component {
   render() {
     return (
       <Wrapper href="https://reactjs.org/" target="_blank">
-        <img src={logo} width="50" height="50" alt="Build a voting App - FreeCodeCamp" />
+        <img src={logo} width="50" height="50" alt="Book Exchange - FreeCodeCamp" />
       </Wrapper>
     )
   }
